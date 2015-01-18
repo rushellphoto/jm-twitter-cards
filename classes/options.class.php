@@ -27,10 +27,9 @@ if ( ! class_exists('JM_TC_Options') ) {
 
         /**
          * Retrieve data from famous SEO plugins such as Yoast or All_in_One_SEO
-         * @since 5.3.2
-         * @param integer $post_ID
-         * @param string $type Whether it's post title or desc
-         * @return string
+         * @param bool $post_ID
+         * @param $type
+         * @return null|string|void
          */
         public static function get_seo_plugin_datas($post_ID = false, $type){
 
@@ -69,12 +68,11 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * Retrieve the meta card type
-        * @since 5.3.2
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * Retrieve the meta card type
+         * @param bool $post_ID
+         * @return array
+         */
         public function cardType($post_ID = false){
 
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
@@ -84,13 +82,13 @@ if ( ! class_exists('JM_TC_Options') ) {
             return array('card' => apply_filters('jm_tc_card_type', $cardType));
         }
 
-        /*
-        * Retrieve the meta creator
-        * @since 5.3.2
-        * @param bool $post_author Whether author is different from global setting or not
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * Retrieve the meta creator
+         * @param bool $post_author
+         * @param bool $post_ID
+         * @return array
+         */
+
         public function creatorUsername($post_author = false, $post_ID = false){
 
             $post = get_post($post_ID);
@@ -115,11 +113,10 @@ if ( ! class_exists('JM_TC_Options') ) {
             return array('creator' => apply_filters('jm_tc_card_creator', $cardCreator));
         }
 
-        /*
-        * retrieve the meta site
-        * @since 5.3.2
-        * @return array
-        */
+        /**
+         * retrieve the meta site
+         * @return array
+         */
         public function siteUsername(){
 
             $cardSite = '@' . JM_TC_Utilities::remove_at($this->opts['twitterSite']);
@@ -128,10 +125,11 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * retrieve the title
-        * @return array
-        */
+        /**
+         * retrieve the title
+         * @param bool $post_ID
+         * @return array
+         */
         public function title($post_ID = false){
 
             if ($post_ID) {
@@ -161,12 +159,11 @@ if ( ! class_exists('JM_TC_Options') ) {
 
         }
 
-        /*
-        * retrieve the description
-        * @param integer $post_ID
-        * @since 5.3.2
-        * @return array
-        */
+        /**
+         * retrieve the description
+         * @param bool $post_ID
+         * @return array
+         */
         public function description($post_ID = false){
 
             if ($post_ID) {
@@ -200,11 +197,11 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * retrieve the images
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * retrieve the images
+         * @param bool $post_ID
+         * @return array|bool|void
+         */
 
         public function image($post_ID = false){
 
@@ -279,11 +276,11 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * Product additional fields
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * Product additional fields
+         * @param $post_ID
+         * @return array|bool|void
+         */
         public function product($post_ID){
 
             $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
@@ -312,11 +309,11 @@ if ( ! class_exists('JM_TC_Options') ) {
             return false;
         }
 
-        /*
-        * Player additional fields
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * Player additional fields
+         * @param $post_ID
+         * @return array|bool|void
+         */
         public function player($post_ID){
 
             $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
@@ -365,11 +362,11 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * Image Width and Height
-        * @param integer $post_ID
-        * @return array
-        */
+        /**
+         * Image Width and Height
+         * @param bool $post_ID
+         * @return array|bool
+         */
 
         public function cardDim($post_ID = false){
 
@@ -401,11 +398,10 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
-        * retrieve the deep linking and app install meta
-        * @since 5.3.2
-        * @return array
-        */
+        /**
+         * retrieve the deep linking and app install meta
+         * @return array
+         */
         public function deeplinking(){
 
             $twitteriPhoneName = (!empty($this->opts['twitteriPhoneName'])) ? $this->opts['twitteriPhoneName'] : '';

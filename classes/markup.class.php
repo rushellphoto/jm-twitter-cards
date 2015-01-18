@@ -39,9 +39,8 @@ if (class_exists('JM_TC_Utilities')) {
         }
 
 
-        /*
-         * Add meta to head section
-         * @since 5.3.2
+        /**
+         *  Add meta to head section
          */
         public function add_markup(){
 
@@ -101,12 +100,10 @@ if (class_exists('JM_TC_Utilities')) {
 
         }
 
-        /*
-        *   Display the different meta
-        *	@since 5.3.2
-        *   @param mixed $data
-        *   @return string
-        */
+        /**
+         * Display the different meta
+         * @param $data
+         */
         protected function display_markup($data){
 
             if (is_array($data)) {
