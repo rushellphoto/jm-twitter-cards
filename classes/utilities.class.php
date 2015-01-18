@@ -9,23 +9,20 @@ if (!class_exists('JM_TC_Utilities')) {
 
     class JM_TC_Utilities{
 
-        /*
-        *   Remove "at" from input
-        *	@since 1.0
-        *   @param string $at
-        *   @return string
-        */
+        /**
+         * @param $at
+         * @return mixed
+         */
         public static function remove_at($at){
             $noat = str_replace('@', '', $at);
             return $noat;
         }
 
-        /*
-        *   Remove line breaks
-        *	@since 5.3.2
-        *   @param string $lb
-        *   @return string
-        */
+        /**
+         * Remove line breaks
+         * @param $lb
+         * @return string
+         */
         public static function remove_lb($lb){
             $output = str_replace(array(
                 "\r\n",
@@ -40,12 +37,11 @@ if (!class_exists('JM_TC_Utilities')) {
             return implode($nolb);
         }
 
-        /*
-        *   Get excerpt by post ID and filter shortcodes, tags and special chars
-        *	@since 5.3.2
-        *   @param integer $post_id
-        *   @return string
-        */
+        /**
+         * Get excerpt by post ID and filter shortcodes, tags and special chars
+         * @param $post_id
+         * @return string|void
+         */
         public static function get_excerpt_by_id($post_id){
             $the_post = get_post($post_id);
             $the_excerpt = $the_post->post_content; //Gets post_content to be used as a basis for the excerpt
@@ -60,13 +56,12 @@ if (!class_exists('JM_TC_Utilities')) {
             return esc_attr(substr($the_excerpt, 0, 200)); // to prevent meta from being broken by e.g ""
         }
 
-        /*
-        *   Get tutorials
-        *	@since 5.3.2
-        *   @param array $data Array containing video IDs
-        *   @param string $provider endpoint API
-        *   @return string
-        */
+        /**
+         * Get tutorials
+         * @param $data
+         * @param string $provider
+         * @return string
+         */
         public static function display_footage($data, $provider = 'http://www.youtube.com/watch?v='){
 
             $output = '';
