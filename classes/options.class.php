@@ -307,9 +307,9 @@ if ( ! class_exists('JM_TC_Options') ) {
                     return self::error(__('Warning : Product Card is not set properly ! There is no product datas !', JM_TC_TEXTDOMAIN));
                 }
 
-            } else {
-                return;
             }
+
+            return false;
         }
 
         /*
@@ -358,9 +358,9 @@ if ( ! class_exists('JM_TC_Options') ) {
 
                 return $player;
 
-            } else {
-                return;
             }
+
+            return false;
 
         }
 
@@ -395,11 +395,9 @@ if ( ! class_exists('JM_TC_Options') ) {
                     'image:width' => $this->opts['twitterCardWidth'],
                     'image:height' => $this->opts['twitterCardHeight']
                 );
-            } else {
-                return;
             }
 
-
+            return false;
         }
 
 
