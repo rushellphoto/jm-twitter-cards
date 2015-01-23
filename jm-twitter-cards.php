@@ -73,8 +73,9 @@ require(JM_TC_CLASS_DIR . 'disable.class.php');
 require(JM_TC_CLASS_DIR . 'options.class.php');
 require(JM_TC_CLASS_DIR . 'markup.class.php');
 
+require(JM_TC_CLASS_DIR . 'init.class.php');
+
 if (is_admin()) {
-    require(JM_TC_ADMIN_CLASS_DIR . 'init.class.php');
     require(JM_TC_ADMIN_CLASS_DIR . 'author.class.php');
     require(JM_TC_ADMIN_CLASS_DIR . 'tabs.class.php');
     require(JM_TC_ADMIN_CLASS_DIR . 'admin-tc.class.php');
