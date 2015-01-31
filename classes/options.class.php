@@ -15,6 +15,16 @@ if ( !class_exists('JM_TC_Options') ) {
          */
         protected $opts = array();
 
+
+        /**
+         * Only allow a publisher to define a valid card type
+         *
+         * @since 1.0
+         * @var array
+         */
+        public static $allowed_card_types = array( 'summary' => true, 'summary_large_image' => true, 'photo' => true, 'gallery' => true, 'player' => true, 'product' => true, 'app' => true );
+
+
         /**
          * Constructor
          * @since 5.3.2
@@ -80,7 +90,12 @@ if ( !class_exists('JM_TC_Options') ) {
             $cardType = (!empty($cardTypePost)) ? $cardTypePost : $this->opts['twitterCardType'];
             $cardType =  apply_filters('jm_tc_card_type', $cardType);
 
-            return array('card' =>$cardType );
+            //in case filter is misused
+            if(isset( self::$allowed_card_types[$cardType] ) ) {
+               return array('card' => $cardType);
+            }
+
+            return array('card' => 'summary');
         }
 
         /**
