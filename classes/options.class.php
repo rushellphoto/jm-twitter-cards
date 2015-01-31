@@ -111,6 +111,7 @@ if ( !class_exists('JM_TC_Options') ) {
             }
 
             $cardCreator = apply_filters('jm_tc_card_creator', $cardCreator );
+
             return array('creator' => $cardCreator);
         }
 
@@ -238,8 +239,9 @@ if ( !class_exists('JM_TC_Options') ) {
                 //In case Open Graph is on
 
                 $img_meta = ('yes' === $this->opts['twitterCardOg']) ? 'image' : 'image:src';
+                $image = apply_filters( 'jm_tc_image_source', $image );
 
-                return array($img_meta => apply_filters('jm_tc_image_source', $image));
+                return array($img_meta => $image );
 
             } else { // markup will be different
 
@@ -320,19 +322,19 @@ if ( !class_exists('JM_TC_Options') ) {
          */
         public function player($post_ID){
 
-            $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
+            $cardType = apply_filters( 'jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
 
             if ('player' === $cardType ) {
 
-                $playerUrl = get_post_meta($post_ID, 'cardPlayer', true);
-                $playerStreamUrl = get_post_meta($post_ID, 'cardPlayerStream', true);
-                $playerWidth = get_post_meta($post_ID, 'cardPlayerWidth', true);
-                $playerHeight = get_post_meta($post_ID, 'cardPlayerHeight', true);
+                $playerUrl = apply_filters( 'jm_tc_player_url', get_post_meta($post_ID, 'cardPlayer', true) );
+                $playerStreamUrl = apply_filters( 'jm_tc_player_stream_url', get_post_meta($post_ID, 'cardPlayerStream', true) );
+                $playerWidth = apply_filters( 'jm_tc_player_width', get_post_meta($post_ID, 'cardPlayerWidth', true) );
+                $playerHeight = apply_filters( 'jm_tc_player_height', get_post_meta($post_ID, 'cardPlayerHeight', true) );
                 $player = array();
 
                 //Player
                 if (!empty($playerUrl)) {
-                    $player['player'] = apply_filters('jm_tc_player_url', $playerUrl);
+                    $player['player'] =  $playerUrl;
                 } else {
                     return self::error(__('Warning : Player Card is not set properly ! There is no URL provided for iFrame player !', JM_TC_TEXTDOMAIN));
                 }
@@ -340,21 +342,23 @@ if ( !class_exists('JM_TC_Options') ) {
                 //Player stream
                 if (!empty($playerStreamUrl)) {
 
-                    $codec = "video/mp4; codecs=&quot;avc1.42E01E1, mp4a.40.2&quot;";
+                    $codec = apply_filters( 'jm_tc_player_codec', 'video/mp4; codecs=&quot;avc1.42E01E1, mp4a.40.2&quot;' );
 
-                    $player['player:stream'] = apply_filters('jm_tc_player_stream_url', $playerStreamUrl);
-                    $player['player:stream:content_type'] = apply_filters('jm_tc_player_codec', $codec);
+                    $player['player:stream'] = $playerStreamUrl;
+                    $player['player:stream:content_type'] =  $codec;
 
                 }
 
                 //Player width and height
                 if (!empty($playerWidth) && !empty($playerHeight)) {
-                    $player['player:width'] = apply_filters('jm_tc_player_width', $playerWidth);
-                    $player['player:height'] = apply_filters('jm_tc_player_height', $playerHeight);
+                    $player['player:width'] = $playerWidth;
+                    $player['player:height'] = $playerHeight;
 
                 } else {
-                    $player['player:width'] = apply_filters('jm_tc_player_default_width', 435);
-                    $player['player:height'] = apply_filters('jm_tc_player_default_height', 251);
+                    $defaultPlayerWidth = apply_filters('jm_tc_player_default_width', 435 );
+                    $defaultPlayerHeight = apply_filters('jm_tc_player_default_height', 251 );
+                    $player['player:width'] = $defaultPlayerWidth;
+                    $player['player:height'] = $defaultPlayerHeight;
                 }
 
                 return $player;
@@ -407,29 +411,29 @@ if ( !class_exists('JM_TC_Options') ) {
          */
         public function deeplinking(){
 
-            $twitteriPhoneName = (!empty($this->opts['twitteriPhoneName'])) ? $this->opts['twitteriPhoneName'] : '';
-            $twitteriPadName = (!empty($this->opts['twitteriPadName'])) ? $this->opts['twitteriPadName'] : '';
-            $twitterGooglePlayName = (!empty($this->opts['twitterGooglePlayName'])) ? $this->opts['twitterGooglePlayName'] : '';
-            $twitteriPhoneUrl = (!empty($this->opts['twitteriPhoneUrl'])) ? $this->opts['twitteriPhoneUrl'] : '';
-            $twitteriPadUrl = (!empty($this->opts['twitteriPadUrl'])) ? $this->opts['twitteriPadUrl'] : '';
-            $twitterGooglePlayUrl = (!empty($this->opts['twitterGooglePlayUrl'])) ? $this->opts['twitterGooglePlayUrl'] : '';
-            $twitteriPhoneId = (!empty($this->opts['twitteriPhoneId'])) ? $this->opts['twitteriPhoneId'] : '';
-            $twitteriPadId = (!empty($this->opts['twitteriPadId'])) ? $this->opts['twitteriPadId'] : '';
-            $twitterGooglePlayId = (!empty($this->opts['twitterGooglePlayId'])) ? $this->opts['twitterGooglePlayId'] : '';
-            $twitterAppCountry = (!empty($this->opts['twitterAppCountry'])) ? $this->opts['twitterAppCountry'] : '';
+            $twitteriPhoneName = (!empty($this->opts['twitteriPhoneName'])) ? apply_filters( 'jm_tc_iphone_name', $this->opts['twitteriPhoneName'] ) : '';
+            $twitteriPadName = (!empty($this->opts['twitteriPadName'])) ? apply_filters( 'jm_tc_ipad_name', $this->opts['twitteriPadName'] ) : '';
+            $twitterGooglePlayName = (!empty($this->opts['twitterGooglePlayName'])) ? apply_filters('jm_tc_googleplay_name', $this->opts['twitterGooglePlayName'] ) : '';
+            $twitteriPhoneUrl = (!empty($this->opts['twitteriPhoneUrl'])) ? apply_filters('jm_tc_iphone_url', $this->opts['twitteriPhoneUrl'] ) : '';
+            $twitteriPadUrl = (!empty($this->opts['twitteriPadUrl'])) ? apply_filters('jm_tc_ipad_url', $this->opts['twitteriPadUrl'] ) : '';
+            $twitterGooglePlayUrl = (!empty($this->opts['twitterGooglePlayUrl'])) ? apply_filters('jm_tc_googleplay_url', $this->opts['twitterGooglePlayUrl'] ) : '';
+            $twitteriPhoneId = (!empty($this->opts['twitteriPhoneId'])) ? apply_filters('jm_tc_iphone_id', $this->opts['twitteriPhoneId'] ) : '';
+            $twitteriPadId = (!empty($this->opts['twitteriPadId'])) ? apply_filters('jm_tc_ipad_id', $this->opts['twitteriPadId'] ) : '';
+            $twitterGooglePlayId = (!empty($this->opts['twitterGooglePlayId'])) ? apply_filters('jm_tc_googleplay_id', $this->opts['twitterGooglePlayId'] ) : '';
+            $twitterAppCountry = (!empty($this->opts['twitterAppCountry'])) ? apply_filters('jm_tc_country', $this->opts['twitterAppCountry'] ) : '';
 
 
             return array(
-                'app:name:iphone' => apply_filters('jm_tc_iphone_name', $twitteriPhoneName),
-                'app:name:ipad' => apply_filters('jm_tc_ipad_name', $twitteriPhoneName),
-                'app:name:googleplay' => apply_filters('jm_tc_googleplay_name', $twitterGooglePlayName),
-                'app:url:iphone' => apply_filters('jm_tc_iphone_url', $twitteriPhoneUrl),
-                'app:url:ipad' => apply_filters('jm_tc_ipad_url', $twitteriPadUrl),
-                'app:url:googleplay' => apply_filters('jm_tc_googleplay_url', $twitterGooglePlayUrl),
-                'app:id:iphone' => apply_filters('jm_tc_iphone_id', $twitteriPhoneId),
-                'app:id:ipad' => apply_filters('jm_tc_ipad_id', $twitteriPadId),
-                'app:id:googleplay' => apply_filters('jm_tc_googleplay_id', $twitterGooglePlayId),
-                'app:id:country' => apply_filters('jm_tc_country', $twitterAppCountry)
+                'app:name:iphone' => $twitteriPhoneName,
+                'app:name:ipad' => $twitteriPhoneName,
+                'app:name:googleplay' =>  $twitterGooglePlayName,
+                'app:url:iphone' => $twitteriPhoneUrl,
+                'app:url:ipad' =>  $twitteriPadUrl,
+                'app:url:googleplay' => $twitterGooglePlayUrl,
+                'app:id:iphone' => $twitteriPhoneId,
+                'app:id:ipad' => $twitteriPadId,
+                'app:id:googleplay' => $twitterGooglePlayId,
+                'app:id:country' => $twitterAppCountry,
             );
 
 
@@ -442,9 +446,8 @@ if ( !class_exists('JM_TC_Options') ) {
         */
         protected function error($error = false){
 
-            if ($error && current_user_can('edit_posts'))
+            if ($error && current_user_can( 'edit_posts' ))
                 return $error;
-            else return;
 
         }
 
