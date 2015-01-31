@@ -78,7 +78,17 @@ function jm_tc_load_files( $dir, $files, $suffix = '' ) {
     }
 }
 
+
+//Call modules only admin
+if (is_admin()) {
+    jm_tc_load_files(JM_TC_ADMIN_CLASS_DIR, array('author', 'tabs', 'admin-tc', 'meta-box', 'preview', 'import-export'), '.class');
+}
+
+//Call functions
 jm_tc_load_files(JM_TC_DIR.'functions/', array('functions'), '.inc');
+
+//Call modules
+jm_tc_load_files(JM_TC_CLASS_DIR, array('init','utilities', 'particular', 'thumbs', 'disable', 'options', 'markup'), '.class');
 
 
 /**
@@ -97,11 +107,6 @@ function jm_tc_plugins_loaded(){
 
         load_plugin_textdomain(JM_TC_DOC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-        //Call modules only admin
-        if (is_admin()) {
-            jm_tc_load_files(JM_TC_ADMIN_CLASS_DIR, array('author', 'tabs', 'admin-tc', 'meta-box', 'preview', 'import-export'), '.class');
-        }
-
         $GLOBALS['tc-admin'] = new JM_TC_Admin;
         $GLOBALS['tc-import-export'] = new JM_TC_Import_Export;
         $GLOBALS['tc-metabox'] =new JM_TC_Metabox;
@@ -111,12 +116,23 @@ function jm_tc_plugins_loaded(){
     //langs
     load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-    //Call modules
-    jm_tc_load_files(JM_TC_CLASS_DIR, array('init','utilities', 'particular', 'thumbs', 'disable', 'options', 'markup'), '.class');
-
     $GLOBALS['tc-init'] = new JM_TC_Init;
     $GLOBALS['tc-disable'] = new JM_TC_Disable;
     $GLOBALS['tc-particular'] = new JM_TC_Particular;
     $GLOBALS['tc-markup'] = new JM_TC_Markup;
 
+}
+
+/**
+ * Add a "Settings" link in the plugins list
+ * @param $links
+ * @return mixed
+ */
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__),  'jm_tc_settings_action_links', 10, 2);
+function jm_tc_settings_action_links($links){
+    $settings_link = '<a href="' . admin_url('admin.php?page='.JM_TC_SLUG) . '">' . __("Settings") . '</a>';
+    array_unshift($links, $settings_link);
+
+    return $links;
 }

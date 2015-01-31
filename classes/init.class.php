@@ -15,21 +15,8 @@ if ( ! class_exists('JM_TC_Init') ) {
             // init metabox
             add_action('init', array(__CLASS__, 'initialize'));
             add_action('wpmu_new_blog', array(__CLASS__, 'new_blog'));
-            add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(__CLASS__, 'settings_action_links'), 10, 2);
         }
 
-
-        /**
-         * Add a "Settings" link in the plugins list
-         * @param $links
-         * @return mixed
-         */
-        public static function settings_action_links($links){
-            $settings_link = '<a href="' . admin_url('admin.php?page='.JM_TC_SLUG) . '">' . __("Settings") . '</a>';
-            array_unshift($links, $settings_link);
-
-            return $links;
-        }
 
         /**
          * Init meta box
