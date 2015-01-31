@@ -101,49 +101,26 @@ if ( !class_exists('JM_TC_Options') ) {
         }
 
         /**
-         * Get post meta values added by SEO plugins with fallbacks
-         * @param bool $post_ID
+         * @param $post_ID
          * @param $type
          * @return bool|null|string|void
          */
-        public static function get_seo_plugin_data($post_ID = false, $type){
+        public static function get_seo_plugin_data($post_ID, $type){
 
-            $title = the_title_attribute(array('echo' => false));
-            $desc = JM_TC_Utilities::get_excerpt_by_id($post_ID);
+            if (class_exists('WPSEO_Frontend')) {
+                $title = JM_TC_Utilities::strip_meta('_yoast_wpseo_title', $post_ID);
+                $desc = JM_TC_Utilities::strip_meta('_yoast_wpseo_metadesc', $post_ID);
 
-            if( false !== $post_ID ) {
-
-                $aioseop_title = JM_TC_Utilities::strip_meta('_aioseop_title', $post_ID);
-                $aioseop_description = JM_TC_Utilities::strip_meta('_aioseop_description', $post_ID);
-                $yoast_wpseo_title = JM_TC_Utilities::strip_meta('_yoast_wpseo_title', $post_ID);
-                $yoast_wpseo_description = JM_TC_Utilities::strip_meta('_yoast_wpseo_metadesc', $post_ID);
-
-                if (class_exists('WPSEO_Frontend')) {
-                    $title = false !== $yoast_wpseo_title ? $yoast_wpseo_title : the_title_attribute(array('echo' => false));
-                    $desc = false !== $yoast_wpseo_description ? $yoast_wpseo_description : JM_TC_Utilities::get_excerpt_by_id($post_ID);
-
-                } elseif (class_exists('All_in_One_SEO_Pack')) {
-                    $title = false !== $aioseop_title ? $aioseop_title : the_title_attribute(array('echo' => false));
-                    $desc = false !== $aioseop_description ? $aioseop_description : JM_TC_Utilities::get_excerpt_by_id($post_ID);
-                }
-
+            } elseif (class_exists('All_in_One_SEO_Pack')) {
+                $title = JM_TC_Utilities::strip_meta('_aioseop_title', $post_ID);
+                $desc = JM_TC_Utilities::strip_meta('_aioseop_description', $post_ID);
             }
 
-            //defensive
-            switch( $type ) {
+           if( 'title' === $type ) {
+               return false !== $title ? $title :  the_title_attribute( array('echo' => false) );
+           }
 
-                case 'title' :
-                    return $title;
-                    break;
-
-                case 'description':
-                    return $desc;
-                    break;
-
-                default:
-                    return $title;
-
-            }
+            return false !== $desc ? $desc : JM_TC_Utilities::get_excerpt_by_id($post_ID);
 
         }
 
@@ -220,7 +197,7 @@ if ( !class_exists('JM_TC_Options') ) {
         /**
          * retrieve the images
          * @param bool $post_ID
-         * @return array|bool|void
+         * @return array|bool|string
          */
 
         public function image($post_ID = false){
@@ -253,7 +230,6 @@ if ( !class_exists('JM_TC_Options') ) {
                 }
 
                 //In case Open Graph is on
-
                 $img_meta = ('yes' === $this->opts['twitterCardOg']) ? 'image' : 'image:src';
                 $image = apply_filters( 'jm_tc_image_source', $image );
 
@@ -294,6 +270,8 @@ if ( !class_exists('JM_TC_Options') ) {
                 }
 
             }
+
+            return false;
 
         }
 
