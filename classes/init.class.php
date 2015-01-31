@@ -25,7 +25,7 @@ if ( ! class_exists('JM_TC_Init') ) {
          * @return mixed
          */
         public static function settings_action_links($links){
-            $settings_link = '<a href="' . admin_url('admin.php?page=jm_tc') . '">' . __("Settings") . '</a>';
+            $settings_link = '<a href="' . admin_url('admin.php?page='.JM_TC_SLUG) . '">' . __("Settings") . '</a>';
             array_unshift($links, $settings_link);
 
             return $links;
@@ -105,8 +105,8 @@ if ( ! class_exists('JM_TC_Init') ) {
          * Avoid undefined index by registering default options
          */
         public static function on_activation(){
-            $opts = get_option('jm_tc');
-            if (!is_array($opts)) update_option('jm_tc', self::get_default_options());
+            $opts = get_option(JM_TC_SLUG);
+            if (!is_array($opts)) update_option(JM_TC_SLUG, self::get_default_options());
         }
 
 

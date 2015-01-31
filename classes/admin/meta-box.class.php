@@ -5,7 +5,7 @@ if (!defined('JM_TC_VERSION')) {
     exit();
 }
 
-if ( ! class_exists('JM_TC_Metabox') ) {
+if ( !class_exists('JM_TC_Metabox') ) {
 
     class JM_TC_Metabox{
         /**
@@ -80,10 +80,10 @@ if ( ! class_exists('JM_TC_Metabox') ) {
          */
         function cmb_update_title_description($args, $field){
 
-            if ($field->id() == 'twitter_featured_size')
+            if ( 'twitter_featured_size' === $field->id() )
                 $args['desc'] = JM_TC_Thumbs::get_post_thumbnail_weight($field->object_id);
 
-            if ($field->id() == 'preview_title')
+            if ( 'preview_title' === $field->id() )
                 $args['desc'] = JM_TC_Preview::show_preview($field->object_id);
 
             return $args;
@@ -174,7 +174,7 @@ if ( ! class_exists('JM_TC_Metabox') ) {
 
             $meta_box['show_on']['alt_value'] = !is_array($meta_box['show_on']['alt_value']) ? array($meta_box['show_on']['alt_value']) : $meta_box['show_on']['alt_value'];
 
-            if ('profile.php' == $pagenow && current_user_can('edit_posts') && in_array('on', $meta_box['show_on']['alt_value'])) {
+            if ('profile.php' === $pagenow && current_user_can('edit_posts') && in_array('on', $meta_box['show_on']['alt_value'])) {
 
                 return $display;
 

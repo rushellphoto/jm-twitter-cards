@@ -5,7 +5,7 @@ if (!defined('JM_TC_VERSION')) {
     exit();
 }
 
-if ( ! class_exists('JM_TC_Options') ) {
+if ( !class_exists('JM_TC_Options') ) {
 
     class JM_TC_Options{
 
@@ -78,8 +78,9 @@ if ( ! class_exists('JM_TC_Options') ) {
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
 
             $cardType = (!empty($cardTypePost)) ? $cardTypePost : $this->opts['twitterCardType'];
+            $cardType =  apply_filters('jm_tc_card_type', $cardType);
 
-            return array('card' => apply_filters('jm_tc_card_type', $cardType));
+            return array('card' =>$cardType );
         }
 
         /**
@@ -109,8 +110,8 @@ if ( ! class_exists('JM_TC_Options') ) {
                 $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
             }
 
-
-            return array('creator' => apply_filters('jm_tc_card_creator', $cardCreator));
+            $cardCreator = apply_filters('jm_tc_card_creator', $cardCreator );
+            return array('creator' => $cardCreator);
         }
 
         /**
@@ -120,8 +121,9 @@ if ( ! class_exists('JM_TC_Options') ) {
         public function siteUsername(){
 
             $cardSite = '@' . JM_TC_Utilities::remove_at($this->opts['twitterSite']);
+            $cardSite = apply_filters('jm_tc_card_site', $cardSite);
 
-            return array('site' => apply_filters('jm_tc_card_site', $cardSite));
+            return array('site' =>  $cardSite);
         }
 
 
@@ -155,7 +157,9 @@ if ( ! class_exists('JM_TC_Options') ) {
 
             }
 
-            return array('title' => apply_filters('jm_tc_get_title', $cardTitle));
+            $cardTitle = apply_filters('jm_tc_get_title', $cardTitle );
+
+            return array('title' =>  $cardTitle);
 
         }
 
@@ -190,9 +194,9 @@ if ( ! class_exists('JM_TC_Options') ) {
             }
 
 
-            $cardDescription = JM_TC_Utilities::remove_lb($cardDescription);
+            $cardDescription = apply_filters( 'jm_tc_get_excerpt', JM_TC_Utilities::remove_lb($cardDescription) );
 
-            return array('description' => apply_filters('jm_tc_get_excerpt', $cardDescription));
+            return array('description' => $cardDescription);
 
         }
 
@@ -208,8 +212,8 @@ if ( ! class_exists('JM_TC_Options') ) {
             $cardImage = get_post_meta($post_ID, 'cardImage', true);
 
             //gallery
-            if (($cardType = get_post_meta($post_ID, 'twitterCardType', true)) != 'gallery') {
-                if (get_the_post_thumbnail($post_ID) != '') {
+            if ( 'gallery' !== ($cardType = get_post_meta($post_ID, 'twitterCardType', true)) ) {
+                if ( '' !== get_the_post_thumbnail($post_ID) ) {
                     if (!empty($cardImage)) { // cardImage is set
                         $image = $cardImage;
                     } else {
@@ -233,7 +237,7 @@ if ( ! class_exists('JM_TC_Options') ) {
 
                 //In case Open Graph is on
 
-                $img_meta = ($this->opts['twitterCardOg'] == 'yes') ? 'image' : 'image:src';
+                $img_meta = ('yes' === $this->opts['twitterCardOg']) ? 'image' : 'image:src';
 
                 return array($img_meta => apply_filters('jm_tc_image_source', $image));
 
@@ -285,20 +289,20 @@ if ( ! class_exists('JM_TC_Options') ) {
 
             $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
 
-            if ($cardType == 'product') {
+            if ('product' === $cardType) {
 
-                $data1 = get_post_meta($post_ID, 'cardData1', true);
-                $label1 = get_post_meta($post_ID, 'cardLabel1', true);
-                $data2 = get_post_meta($post_ID, 'cardData2', true);
-                $label2 = get_post_meta($post_ID, 'cardLabel2', true);
+                $data1  = apply_filters( 'jm_tc_product_field-data1',get_post_meta($post_ID, 'cardData1', true) );
+                $label1 = apply_filters( 'jm_tc_product_field-label1', get_post_meta($post_ID, 'cardLabel1', true) );
+                $data2  = apply_filters( 'jm_tc_product_field-data2', get_post_meta($post_ID, 'cardData2', true) );
+                $label2 = apply_filters( 'jm_tc_product_field-label2', get_post_meta($post_ID, 'cardLabel2', true) );
 
 
                 if (!empty($data1) && !empty($label1) && !empty($data2) && !empty($label2)) {
                     return array(
-                        'data1' => apply_filters('jm_tc_product_field-data1', $data1),
-                        'label1' => apply_filters('jm_tc_product_field-label1', $label1),
-                        'data2' => apply_filters('jm_tc_product_field-data2', $data2),
-                        'label2' => apply_filters('jm_tc_product_field-label2', $label2)
+                        'data1' => $data1,
+                        'label1' => $label1,
+                        'data2' => $data2,
+                        'label2' => $label2,
                     );
                 } else {
                     return self::error(__('Warning : Product Card is not set properly ! There is no product datas !', JM_TC_TEXTDOMAIN));
@@ -318,7 +322,7 @@ if ( ! class_exists('JM_TC_Options') ) {
 
             $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
 
-            if ($cardType == 'player') {
+            if ('player' === $cardType ) {
 
                 $playerUrl = get_post_meta($post_ID, 'cardPlayer', true);
                 $playerStreamUrl = get_post_meta($post_ID, 'cardPlayerStream', true);
@@ -374,7 +378,6 @@ if ( ! class_exists('JM_TC_Options') ) {
             $cardWidth = get_post_meta($post_ID, 'cardImageWidth', true);
             $cardHeight = get_post_meta($post_ID, 'cardImageHeight', true);
             $type = (!empty($cardTypePost)) ? $cardTypePost : $this->opts['twitterCardType'];
-
 
             if (in_array($type, array('photo', 'product', 'summary_large_image', 'player'))) {
 
@@ -433,7 +436,7 @@ if ( ! class_exists('JM_TC_Options') ) {
         }
 
 
-        /*
+        /**
         * error in config
         * @return string
         */

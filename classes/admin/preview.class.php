@@ -45,7 +45,7 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $styles = '';
             $position = 'position:relative;';
             $hide = '';
-            $img = ($is_og == 'yes') ? $img_arr['image'] : $img_arr['image:src'];
+            $img = ('yes' === $is_og ) ? $img_arr['image'] : $img_arr['image:src'];
             $img_summary = '';
             $gallery_meta = '';
 
@@ -115,7 +115,7 @@ if ( ! class_exists('JM_TC_Preview') ) {
                 $hide = 'hide';
                 $class = 'bg-opacity';
                 $app = '<div class="app-view" style="float:left;">';
-                $app .= '<strong>' . __('Preview for app cards is not available yet.', 'jm-tc') . '</strong>';
+                $app .= '<strong>' . __('Preview for app cards is not available yet.', JM_TC_TEXTDOMAIN) . '</strong>';
                 $app .= '</div>';
             } else {
 
@@ -129,7 +129,7 @@ if ( ! class_exists('JM_TC_Preview') ) {
 							<div style="float:left;">
 							' . get_avatar(false, 16) . '
 							
-							<span>' . __('Name associated with ', 'jm-tc') . $site_arr['site'] . '</span>
+							<span>' . __('Name associated with ', JM_TC_TEXTDOMAIN) . $site_arr['site'] . '</span>
 							
 							<div style="float:left;" class="' . $hide . '">
 								<' . $tag . ' class="' . $class . '" width="' . $size . '" height="' . $size . '" style="' . $styles . ' -webkit-user-drag: none; " ' . $src . '="' . $img . '">' . $close_tag . '
@@ -142,14 +142,14 @@ if ( ! class_exists('JM_TC_Preview') ) {
 									
 							<div style="float:left;">
 							<div><strong>' . $title_arr['title'] . '</strong></div>
-							<div><em>By ' . __('Name associated with ', 'jm-tc') . $creator_arr['creator'] . '</em></div>
+							<div><em>By ' . __('Name associated with ', JM_TC_TEXTDOMAIN) . $creator_arr['creator'] . '</em></div>
 							<div>' . $description_arr['description'] . '</div>
 							</div>
 							'
                 . $img_summary .
                 '
 							
-							<div style="float:left;" class="gray"><strong>' . __('View on the web', 'jm-tc') . '<strong></div>
+							<div style="float:left;" class="gray"><strong>' . __('View on the web', JM_TC_TEXTDOMAIN) . '<strong></div>
 						
 						</div></div>';
 

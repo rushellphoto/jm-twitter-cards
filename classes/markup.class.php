@@ -5,7 +5,7 @@ if (!defined('JM_TC_VERSION')) {
     exit();
 }
 
-if (class_exists('JM_TC_Utilities')) {
+if (!class_exists('JM_TC_Markup')) {
 
     class JM_TC_Markup{
         /**
@@ -46,9 +46,7 @@ if (class_exists('JM_TC_Utilities')) {
          */
         public function add_markup(){
 
-            global $jm_twitter_cards;
-            $jm_twitter_cards['options'] = new JM_TC_Options;
-            $options = $jm_twitter_cards['options'];
+            $options = new JM_TC_Options;
 
             if (
                 is_singular()
@@ -112,9 +110,9 @@ if (class_exists('JM_TC_Utilities')) {
 
                 foreach ($data as $name => $value) {
 
-                    if ($value != '') {
+                    if ( '' !== $value) {
 
-                        if ($this->opts['twitterCardOg'] == 'yes' && in_array($name, array('title', 'description', 'image', 'image:width', 'image:height'))) {
+                        if ( 'yes' === $this->opts['twitterCardOg'] && in_array($name, array('title', 'description', 'image', 'image:width', 'image:height'))) {
 
                             $is_og = 'og';
                             $name_tag = 'property';

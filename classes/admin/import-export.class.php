@@ -80,7 +80,7 @@ if ( ! class_exists('JM_TC_Import_Export') ) {
             if (!current_user_can('manage_options'))
                 return;
 
-            $settings = get_option('jm_tc');
+            $settings = get_option(JM_TC_SLUG);
 
             ignore_user_abort(true);
 
@@ -123,9 +123,9 @@ if ( ! class_exists('JM_TC_Import_Export') ) {
             // Retrieve the settings from the file and convert the json object to an array.
             $settings = (array)json_decode(file_get_contents($import_file));
 
-            update_option('jm_tc', $settings);
+            update_option(JM_TC_SLUG, $settings);
 
-            wp_safe_redirect(admin_url('admin.php?page=jm_tc'));
+            wp_safe_redirect(admin_url('admin.php?page='.JM_TC_SLUG));
             exit;
 
         }

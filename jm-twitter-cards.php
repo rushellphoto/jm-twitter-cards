@@ -80,7 +80,7 @@ function jm_tc_load_files( $dir, $files, $suffix = '' ) {
 
 //Call modules
 if (is_admin()) {
-    jm_tc_load_files(JM_TC_ADMIN_CLASS_DIR, array('author', 'tabs', 'admin-tc', 'preview', 'meta-box', 'import-export'), '.class');
+    jm_tc_load_files(JM_TC_ADMIN_CLASS_DIR, array('author', 'tabs', 'admin-tc', 'meta-box', 'preview', 'import-export'), '.class');
 }
 
 jm_tc_load_files(JM_TC_CLASS_DIR, array('init','utilities', 'particular', 'thumbs', 'disable', 'options', 'markup'), '.class');

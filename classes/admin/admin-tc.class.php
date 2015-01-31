@@ -12,7 +12,7 @@ if ( ! class_exists('JM_TC_Admin') ) {
          * Option key, and option page slug
          * @var string
          */
-        protected static $key = 'jm_tc';
+        protected static $key = JM_TC_SLUG;
 
         /**
          * Array of metaboxes/fields
