@@ -12,6 +12,8 @@ if ( ! class_exists('JM_TC_Init') ) {
          */
         public function __construct(){
 
+            // init metabox
+            add_action('init', array(__CLASS__, 'initialize'));
             add_action('wpmu_new_blog', array(__CLASS__, 'new_blog'));
             add_filter('plugin_action_links_' . plugin_basename(__FILE__), array(__CLASS__, 'settings_action_links'), 10, 2);
         }
@@ -149,7 +151,7 @@ if ( ! class_exists('JM_TC_Init') ) {
                 'twitterCardMetabox' => 'yes',
                 'twitterProfile' => 'yes',
                 'twitterPostPageTitle' => get_bloginfo('name'), // filter used by plugin to customize title
-                'twitterPostPageDesc' => __('Welcome to', 'jm-tc') . ' ' . get_bloginfo('name') . ' - ' . __('see blog posts', 'jm-tc'),
+                'twitterPostPageDesc' => __('Welcome to', JM_TC_TEXTDOMAIN) . ' ' . get_bloginfo('name') . ' - ' . __('see blog posts', JM_TC_TEXTDOMAIN),
                 'twitterCardTitle' => '',
                 'twitterCardDesc' => '',
                 'twitterCardExcerpt' => 'no',

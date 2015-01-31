@@ -22,6 +22,8 @@ if (class_exists('JM_TC_Utilities')) {
 
             $this->opts = jm_tc_get_options();
 
+            add_action( 'wp_head', array($this, 'add_markup'), 2 );
+
         }
 
         /**

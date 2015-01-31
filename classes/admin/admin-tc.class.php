@@ -33,11 +33,11 @@ if ( ! class_exists('JM_TC_Admin') ) {
         public function __construct(){
 
             $this->title = __('JM Twitter Cards', JM_TC_TEXTDOMAIN);
-            add_action('admin_init', array($this, 'mninit'));
-            add_action('admin_menu', array($this, 'add_page'));
-            add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
-            add_filter('cmb_frontend_form_format', array($this, 'save_button'), 10, 3);
-            add_action('cmb_save_options-page_fields', array($this, 'is_it_saved'));
+            add_action( 'admin_init', array($this, 'mninit') );
+            add_action( 'admin_menu', array($this, 'add_page') );
+            add_action( 'admin_enqueue_scripts', array($this, 'admin_scripts') );
+            add_filter( 'cmb_frontend_form_format', array($this, 'save_button'), 10, 3 );
+            add_action( 'cmb_save_options-page_fields', array($this, 'is_it_saved') );
         }
 
         /**

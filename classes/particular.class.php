@@ -19,13 +19,13 @@ if (!class_exists('JM_TC_Particular')) {
          */
         public function __construct(){
 
-            add_filter('robots_txt', array($this, 'robots_mod'), 10, 2);
-            add_filter('cmb_meta_box_url', array($this, 'update_cmb_meta_box_url'));
+            add_filter( 'robots_txt', array($this, 'robots_mod'), 10, 2 );
+            add_filter( 'cmb_meta_box_url', array($this, 'update_cmb_meta_box_url') );
 
             $this->opts = jm_tc_get_options();
 
             if (isset($this->opts['twitterCardExcerpt']) && $this->opts['twitterCardExcerpt'] == 'yes')
-                add_filter('jm_tc_get_excerpt', array($this, 'modify_excerpt'));
+                add_filter( 'jm_tc_get_excerpt', array($this, 'modify_excerpt') );
 
         }
 

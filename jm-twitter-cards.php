@@ -46,76 +46,47 @@ or die('No direct load !');
 
 
 //Constantly constant
-define('JM_TC_VERSION', '5.4.3');
-define('JM_TC_DIR', plugin_dir_path(__FILE__));
-define('JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/');
-define('JM_TC_ADMIN_CLASS_DIR', JM_TC_DIR . 'classes/admin/');
-define('JM_TC_ADMIN_PAGES_DIR', JM_TC_DIR . 'views/pages/');
-define('JM_TC_METABOX_DIR', JM_TC_DIR . 'classes/meta-box/');
+define( 'JM_TC_VERSION', '5.4.3' );
+define( 'JM_TC_DIR', plugin_dir_path(__FILE__) );
+define( 'JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/' );
+define( 'JM_TC_ADMIN_CLASS_DIR', JM_TC_DIR . 'classes/admin/' );
+define( 'JM_TC_ADMIN_PAGES_DIR', JM_TC_DIR . 'views/pages/' );
+define( 'JM_TC_METABOX_DIR', JM_TC_DIR . 'classes/meta-box/' );
 
-define('JM_TC_LANG_DIR', dirname(plugin_basename(__FILE__)) . '/languages/');
-define('JM_TC_TEXTDOMAIN', 'jm-tc');
-define('JM_TC_DOC_TEXTDOMAIN', 'jm-tc-doc');
+define( 'JM_TC_LANG_DIR', dirname(plugin_basename(__FILE__)) . '/languages/' );
+define( 'JM_TC_TEXTDOMAIN', 'jm-tc' );
+define( 'JM_TC_DOC_TEXTDOMAIN', 'jm-tc-doc' );
+define( 'JM_TC_SLUG', 'jm_tc' );
 
-define('JM_TC_URL', plugin_dir_url(__FILE__));
-define('JM_TC_METABOX_URL', JM_TC_URL . 'classes/meta-box/');
-define('JM_TC_IMG_URL', JM_TC_URL . 'assets/img/');
-define('JM_TC_CSS_URL', JM_TC_URL . 'assets/css/');
-define('JM_TC_JS_URL', JM_TC_URL . 'assets/js/');
+define( 'JM_TC_URL', plugin_dir_url(__FILE__) );
+define( 'JM_TC_METABOX_URL', JM_TC_URL . 'classes/meta-box/' );
+define( 'JM_TC_IMG_URL', JM_TC_URL . 'assets/img/' );
+define( 'JM_TC_CSS_URL', JM_TC_URL . 'assets/css/' );
+define( 'JM_TC_JS_URL', JM_TC_URL . 'assets/js/' );
 
+/**
+ * Load stuffs
+ * @param $dir
+ * @param $files
+ * @param string $suffix
+ */
+function jm_tc_load_files( $dir, $files, $suffix = '' ) {
+    foreach( $files as $file ) {
+        if( is_file( $dir .  $file . $suffix . ".php" ) ) {
+            require_once( $dir . $file . $suffix . ".php" );
+        }
+    }
+}
 
 //Call modules
-require(JM_TC_DIR       . 'functions/functions.inc.php');
-require(JM_TC_CLASS_DIR . 'utilities.class.php');
-require(JM_TC_CLASS_DIR . 'particular.class.php');
-require(JM_TC_CLASS_DIR . 'thumbs.class.php');
-require(JM_TC_CLASS_DIR . 'disable.class.php');
-require(JM_TC_CLASS_DIR . 'options.class.php');
-require(JM_TC_CLASS_DIR . 'markup.class.php');
-
-require(JM_TC_CLASS_DIR . 'init.class.php');
-
 if (is_admin()) {
-    require(JM_TC_ADMIN_CLASS_DIR . 'author.class.php');
-    require(JM_TC_ADMIN_CLASS_DIR . 'tabs.class.php');
-    require(JM_TC_ADMIN_CLASS_DIR . 'admin-tc.class.php');
-    require(JM_TC_ADMIN_CLASS_DIR . 'preview.class.php');
-    require(JM_TC_ADMIN_CLASS_DIR . 'meta-box.class.php');
-    require(JM_TC_ADMIN_CLASS_DIR . 'import-export.class.php');
-
+    jm_tc_load_files(JM_TC_ADMIN_CLASS_DIR, array('author', 'tabs', 'admin-tc', 'preview', 'meta-box', 'import-export'), '.class');
 }
 
-/******************
- * CLASS INIT
- ******************/
+jm_tc_load_files(JM_TC_CLASS_DIR, array('init','utilities', 'particular', 'thumbs', 'disable', 'options', 'markup'), '.class');
+jm_tc_load_files(JM_TC_DIR.'functions/', array('functions'), '.inc');
 
-global $jm_twitter_cards;
-
-//check if Twitter cards is activated in Yoast and deactivate it
-$jm_twitter_cards['disable'] = new JM_TC_Disable;
-
-//handle particular cases	
-$jm_twitter_cards['particular'] = new JM_TC_Particular;
-
-//admin classes
-if (is_admin()) {
-
-    $jm_twitter_cards['init'] = new JM_TC_init;
-    $jm_twitter_cards['utilities'] = new JM_TC_Utilities;
-    $jm_twitter_cards['admin-tabs'] = new JM_TC_Tabs;
-    $jm_twitter_cards['admin-base'] = new JM_TC_Admin;
-    $jm_twitter_cards['admin-import-export'] = new JM_TC_Import_Export;
-    $jm_twitter_cards['admin-preview'] = new JM_TC_Preview;
-    $jm_twitter_cards['admin-metabox'] = new JM_TC_Metabox;
-    $jm_twitter_cards['admin-about'] = new JM_TC_Author;
-
-}
-
-$jm_twitter_cards['process-thumbs'] = new JM_TC_Thumbs;
-$jm_twitter_cards['populate-markup'] = new JM_TC_Markup;
-
-
-/*
+/**
 * On activation
 */
 register_activation_hook(__FILE__, array('JM_TC_Init', 'activate'));
@@ -124,24 +95,25 @@ register_activation_hook(__FILE__, array('JM_TC_Init', 'activate'));
 /**
  * Everything that should trigger early
  */
-add_action('plugins_loaded', 'jm_tc_plugins_loaded');
+add_action( 'plugins_loaded', 'jm_tc_plugins_loaded' );
 function jm_tc_plugins_loaded(){
-
-    // init metabox
-    add_action('init', array('JM_TC_Init', 'initialize'));
-
-    //langs
-    load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
     if (is_admin()) {
 
         load_plugin_textdomain(JM_TC_DOC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
+        new JM_TC_Admin;
+        new JM_TC_Import_Export;
+        new JM_TC_Metabox;
+
     }
 
-    //markup
-    global $jm_twitter_cards;
-    $init_markup = $jm_twitter_cards['populate-markup'];
+    //langs
+    load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-    add_action('wp_head', array($init_markup, 'add_markup'), 2);
+    new JM_TC_Init;
+    new JM_TC_Disable;
+    new JM_TC_Particular;
+    new JM_TC_Markup;
+
 }

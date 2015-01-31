@@ -14,8 +14,8 @@ if ( ! class_exists('JM_TC_Import_Export') ) {
          */
         public function __construct(){
             $this->title = __('JM Twitter Cards', JM_TC_TEXTDOMAIN);
-            add_action('admin_init', array($this, 'process_settings_export'));
-            add_action('admin_init', array($this, 'process_settings_import'));
+            add_action( 'admin_init', array($this, 'process_settings_export') );
+            add_action( 'admin_init', array($this, 'process_settings_import') );
         }
 
         /**

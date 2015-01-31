@@ -15,10 +15,7 @@ if ( ! class_exists('JM_TC_Preview') ) {
          */
         public static function show_preview($post_ID){
 
-            global $jm_twitter_cards;
-            $jm_twitter_cards['options'] = new JM_TC_Options;
-
-            $options = $jm_twitter_cards['options'];
+            $options = new JM_TC_Options;
             $opts = jm_tc_get_options();
 
             $is_og = $opts['twitterCardOg'];
