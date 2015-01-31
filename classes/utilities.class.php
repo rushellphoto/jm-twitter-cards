@@ -19,6 +19,21 @@ if (!class_exists('JM_TC_Utilities')) {
         }
 
         /**
+         * @param $key
+         * @param $post_id
+         * @return bool|string
+         */
+        public static function strip_meta($key, $post_id){
+
+            $meta =  get_post_meta( $post_id, $key, true );
+            if('' !== $meta && is_string($meta)) {
+                return htmlspecialchars(stripcslashes($meta));
+            }
+
+            return false;
+        }
+
+        /**
          * Remove line breaks
          * @param $lb
          * @return string
