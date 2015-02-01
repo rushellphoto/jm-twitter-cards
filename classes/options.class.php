@@ -199,7 +199,6 @@ if ( !class_exists('JM_TC_Options') ) {
          * @param bool $post_ID
          * @return array|bool|string
          */
-
         public function image($post_ID = false){
 
             $cardImage = get_post_meta($post_ID, 'cardImage', true);
@@ -270,7 +269,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return false;
+            return $post_ID;
 
         }
 
@@ -304,7 +303,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return false;
+            return $post_ID;
         }
 
         /**
@@ -356,7 +355,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return false;
+            return $post_ID;
 
         }
 
@@ -392,7 +391,7 @@ if ( !class_exists('JM_TC_Options') ) {
                 );
             }
 
-            return false;
+            return $post_ID;
         }
 
 
