@@ -45,11 +45,11 @@ if ( !class_exists('JM_TC_Options') ) {
 
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
 
-            $cardType = (!empty($cardTypePost)) ? $cardTypePost : $this->opts['twitterCardType'];
+            $cardType = '' !== $cardTypePost ? $cardTypePost : $this->opts['twitterCardType'];
             $cardType =  apply_filters('jm_tc_card_type', $cardType);
 
             //in case filter is misused
-            if(isset( self::$allowed_card_types[$cardType] ) ) {
+            if( isset( self::$allowed_card_types[$cardType] ) ) {
                return array('card' => $cardType);
             }
 
@@ -70,14 +70,14 @@ if ( !class_exists('JM_TC_Options') ) {
 
             $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
 
-            if ($post_author) {
+            if ( false !== $post_author) {
 
                 //to be modified or left with the value 'jm_tc_twitter'
 
                 $cardUsernameKey = $this->opts['twitterUsernameKey'];
                 $cardCreator = get_the_author_meta($cardUsernameKey, $author_id);
 
-                $cardCreator = (!empty($cardCreator)) ? $cardCreator : $this->opts['twitterCreator'];
+                $cardCreator = '' !== $cardCreator ? $cardCreator : $this->opts['twitterCreator'];
                 $cardCreator = '@' . JM_TC_Utilities::remove_at($cardCreator);
 
             }
@@ -235,39 +235,35 @@ if ( !class_exists('JM_TC_Options') ) {
 
                 return array($img_meta => $image );
 
-            } else { // markup will be different
+            }
 
-                global $post;
+            $post_obj = get_queried_object();
 
-                if (is_a($post, 'WP_Post')
-                    && function_exists('has_shortcode')
-                ) {
+            if ( is_a($post_obj, 'WP_Post') && function_exists('has_shortcode') ) {
 
-                    if (has_shortcode($post->post_content, 'gallery')) {
+                if ( has_shortcode( $post_obj->post_content, 'gallery' ) ) {
 
-                        $query_img = get_post_gallery() ? get_post_gallery($post_ID, false) : array();//no backward compatibility before 3.6
+                    $query_img = get_post_gallery() ? get_post_gallery($post_ID, false) : array();//no backward compatibility before 3.6
 
-                        $pic = array();
-                        $i = 0;
+                    $pic = array();
+                    $i = 0;
 
-                        foreach ($query_img['src'] as $img) {
+                    foreach ($query_img['src'] as $img) {
 
-                            // get attachment array with the ID from the returned posts
+                        // get attachment array with the ID from the returned posts
 
-                            $pic['image' . $i . ':src'] = $img;
+                        $pic['image' . $i . ':src'] = $img;
 
-                            $i++;
-                            if ($i > 3) break; //in case there are more than 4 images in post, we are not allowed to add more than 4 images in our card by Twitter
+                        $i++;
+                        if ($i > 3) break; //in case there are more than 4 images in post, we are not allowed to add more than 4 images in our card by Twitter
 
-                        }
-
-                        return $pic;
-
-                    } else {
-                        return self::error(__('Warning : Gallery Card is not set properly ! There is no gallery in this post !', JM_TC_TEXTDOMAIN));
                     }
 
+                    return $pic;
+
                 }
+
+                return self::error(__('Warning : Gallery Card is not set properly ! There is no gallery in this post !', JM_TC_TEXTDOMAIN));
 
             }
 
@@ -292,17 +288,16 @@ if ( !class_exists('JM_TC_Options') ) {
                 $data2  = apply_filters( 'jm_tc_product_field-data2', get_post_meta($post_ID, 'cardData2', true) );
                 $label2 = apply_filters( 'jm_tc_product_field-label2', get_post_meta($post_ID, 'cardLabel2', true) );
 
-
-                if (!empty($data1) && !empty($label1) && !empty($data2) && !empty($label2)) {
+                if ( '' !== $data1 && '' !== $label1 && '' !== $data2 && '' !== $label2 ) {
                     return array(
                         'data1' => $data1,
                         'label1' => $label1,
                         'data2' => $data2,
                         'label2' => $label2,
                     );
-                } else {
-                    return self::error(__('Warning : Product Card is not set properly ! There is no product datas !', JM_TC_TEXTDOMAIN));
                 }
+
+                return self::error(__('Warning : Product Card is not set properly ! There is no product datas !', JM_TC_TEXTDOMAIN));
 
             }
 
@@ -324,17 +319,22 @@ if ( !class_exists('JM_TC_Options') ) {
                 $playerStreamUrl = apply_filters( 'jm_tc_player_stream_url', get_post_meta($post_ID, 'cardPlayerStream', true) );
                 $playerWidth = apply_filters( 'jm_tc_player_width', get_post_meta($post_ID, 'cardPlayerWidth', true) );
                 $playerHeight = apply_filters( 'jm_tc_player_height', get_post_meta($post_ID, 'cardPlayerHeight', true) );
+                $defaultPlayerWidth = apply_filters('jm_tc_player_default_width', 435 );
+                $defaultPlayerHeight = apply_filters('jm_tc_player_default_height', 251 );
+
                 $player = array();
+                $player['player:width'] = $defaultPlayerWidth;
+                $player['player:height'] = $defaultPlayerHeight;
+                $player['player'] =  $playerUrl;
+
 
                 //Player
-                if (!empty($playerUrl)) {
-                    $player['player'] =  $playerUrl;
-                } else {
+                if ( '' === $playerUrl ) {
                     return self::error(__('Warning : Player Card is not set properly ! There is no URL provided for iFrame player !', JM_TC_TEXTDOMAIN));
                 }
 
                 //Player stream
-                if (!empty($playerStreamUrl)) {
+                if ( '' !== $playerStreamUrl ) {
 
                     $codec = apply_filters( 'jm_tc_player_codec', 'video/mp4; codecs=&quot;avc1.42E01E1, mp4a.40.2&quot;' );
 
@@ -343,16 +343,10 @@ if ( !class_exists('JM_TC_Options') ) {
 
                 }
 
-                //Player width and height
-                if (!empty($playerWidth) && !empty($playerHeight)) {
+                if ( '' !== $playerWidth && '' !== $playerHeight ) {
                     $player['player:width'] = $playerWidth;
                     $player['player:height'] = $playerHeight;
 
-                } else {
-                    $defaultPlayerWidth = apply_filters('jm_tc_player_default_width', 435 );
-                    $defaultPlayerHeight = apply_filters('jm_tc_player_default_height', 251 );
-                    $player['player:width'] = $defaultPlayerWidth;
-                    $player['player:height'] = $defaultPlayerHeight;
                 }
 
                 return $player;
@@ -375,19 +369,19 @@ if ( !class_exists('JM_TC_Options') ) {
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
             $cardWidth = get_post_meta($post_ID, 'cardImageWidth', true);
             $cardHeight = get_post_meta($post_ID, 'cardImageHeight', true);
-            $type = (!empty($cardTypePost)) ? $cardTypePost : $this->opts['twitterCardType'];
+            $type = '' !== $cardTypePost ? $cardTypePost : $this->opts['twitterCardType'];
 
             if (in_array($type, array('photo', 'product', 'summary_large_image', 'player'))) {
 
-                $width = (!empty($cardWidth)) ?  apply_filters('jm_tc_image_width', $cardWidth ) : $this->opts['twitterImageWidth'];
-                $height = (!empty($cardHeight)) ? apply_filters('jm_tc_image_height', $cardHeight ) : $this->opts['twitterImageHeight'];
+                $width = '' !== $cardWidth ?  apply_filters( 'jm_tc_image_width', $cardWidth ) : $this->opts['twitterImageWidth'];
+                $height = '' !== $cardHeight ? apply_filters( 'jm_tc_image_height', $cardHeight ) : $this->opts['twitterImageHeight'];
 
                 return array(
                     'image:width' => $width,
                     'image:height' => $height,
                 );
 
-            } elseif (in_array($type, array('photo', 'product', 'summary_large_image', 'player')) && !$post_ID) {
+            } elseif (in_array($type, array('photo', 'product', 'summary_large_image', 'player')) && false !== $post_ID) {
 
                 return array(
                     'image:width' => $this->opts['twitterCardWidth'],
