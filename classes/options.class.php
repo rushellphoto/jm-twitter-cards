@@ -195,7 +195,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
 
         /**
-         * retrieve the images
+         * retrieve the image
          * @param bool $post_ID
          * @return array|bool|string
          */
@@ -203,49 +203,13 @@ if ( !class_exists('JM_TC_Options') ) {
 
             $cardImage = get_post_meta($post_ID, 'cardImage', true);
             $cardType = get_post_meta($post_ID, 'twitterCardType', true);
-            $post_obj = get_queried_object();
             $image = $this->opts['twitterImage'];
 
-            if( 'gallery' !== $cardType ) {
+            if( 'gallery' === $cardType ) {
 
-                if (false === $post_ID) {
-                    $image = $this->opts['twitterImage'];
-                }
+                $query_img = get_post_gallery($post_ID, false);
 
-                if ('' !== $cardImage) {
-                    $image = $cardImage;
-                }
-
-                if ('' !== get_the_post_thumbnail($post_ID)) {
-
-                    $size = JM_TC_Thumbs::thumbnail_sizes($post_ID);
-                    $image_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post_ID), $size);
-                    $image = $image_attributes[0];
-
-                    if ('' !== $cardImage) { // cardImage is set
-                        $image = $cardImage;
-                    }
-
-                }
-
-                if ('attachment' == get_post_type()) {
-
-                    $image = wp_get_attachment_url($post_ID);
-                }
-
-                //In case Open Graph is on
-                $img_meta = 'yes' === $this->opts['twitterCardOg'] ? 'image' : 'image:src';
-                $image = apply_filters('jm_tc_image_source', $image);
-
-                return array($img_meta => $image);
-            }
-
-
-            if ( is_a($post_obj, 'WP_Post') && function_exists('has_shortcode') ) {
-
-                if ( has_shortcode( $post_obj->post_content, 'gallery' ) ) {
-
-                    $query_img = false !== $post_ID ? get_post_gallery($post_ID, false) : array();//no backward compatibility before 3.6
+                if( is_array($query_img) ) {
 
                     $pic = array();
                     $i = 0;
@@ -269,8 +233,35 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return $post_ID;
+            if (false === $post_ID) {
+                $image = $this->opts['twitterImage'];
+            } elseif ('' !== $cardImage) {
+                $image = $cardImage;
+            }
 
+            if ('' !== get_the_post_thumbnail($post_ID)) {
+
+                $size = JM_TC_Thumbs::thumbnail_sizes($post_ID);
+                $image_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post_ID), $size);
+                $image = $image_attributes[0];
+
+                if ('' !== $cardImage) { // cardImage is set
+                    $image = $cardImage;
+                }
+
+            }
+
+            if ('attachment' == get_post_type()) {
+
+                $image = wp_get_attachment_url($post_ID);
+            }
+
+            //In case Open Graph is on
+            $img_meta = 'yes' === $this->opts['twitterCardOg'] ? 'image' : 'image:src';
+            $image = apply_filters('jm_tc_image_source', $image);
+
+            return array($img_meta => $image);
+            
         }
 
 

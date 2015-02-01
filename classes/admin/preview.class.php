@@ -31,8 +31,6 @@ if ( ! class_exists('JM_TC_Preview') ) {
 
             /* secondary meta */
             $product_arr = $options->product($post_ID);
-            $player_arr = $options->player($post_ID);
-            $deep_link_arr = $options->deeplinking();
 
             // default
             $app = '';
@@ -43,7 +41,6 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $src = 'src';
             $product_meta = '';
             $styles = '';
-            $position = 'position:relative;';
             $hide = '';
             $img = ('yes' === $is_og ) ? $img_arr['image'] : $img_arr['image:src'];
             $img_summary = '';
@@ -77,15 +74,14 @@ if ( ! class_exists('JM_TC_Preview') ) {
 
                     $i = 0;
 
-                    foreach ($img_arr as $name => $url) $gallery_meta .= '<img class="tile" src="' . $url . '" alt="" />';
+                    foreach ($img_arr as $name => $url) {
+                        $gallery_meta .= '<img class="tile" src="' . $url . '" alt="" />';
 
-                    $i++;
+                        $i++;
 
-                    if ($i > 3) {
+                        if ($i > 3) break;
 
-                        break;
                     }
-
                 }
 
                 $gallery_meta .= '</div>';
@@ -97,7 +93,6 @@ if ( ! class_exists('JM_TC_Preview') ) {
                 $hide = 'hide';
                 $class = 'summary-image';
                 $img_summary = '<img class="' . $class . '" width="' . $size . '" height="' . $size . '" style="' . $styles . ' -webkit-user-drag: none; " ' . $src . '="' . $img . '">';
-                $float = 'float:right;';
 
             } elseif (in_array('product', $cardType_arr)) {
 
