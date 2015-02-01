@@ -68,6 +68,8 @@ if ( !class_exists('JM_TC_Options') ) {
             $post = get_post($post_ID);
             $author_id = $post->post_author;
 
+            $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
+
             if ($post_author) {
 
                 //to be modified or left with the value 'jm_tc_twitter'
@@ -78,9 +80,6 @@ if ( !class_exists('JM_TC_Options') ) {
                 $cardCreator = (!empty($cardCreator)) ? $cardCreator : $this->opts['twitterCreator'];
                 $cardCreator = '@' . JM_TC_Utilities::remove_at($cardCreator);
 
-            } else {
-
-                $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
             }
 
             $cardCreator = apply_filters('jm_tc_card_creator', $cardCreator );
@@ -101,6 +100,7 @@ if ( !class_exists('JM_TC_Options') ) {
         }
 
         /**
+         * Retrieve plugin data with fallbacks
          * @param $post_ID
          * @param $type
          * @return bool|null|string|void
@@ -379,12 +379,12 @@ if ( !class_exists('JM_TC_Options') ) {
 
             if (in_array($type, array('photo', 'product', 'summary_large_image', 'player'))) {
 
-                $width = (!empty($cardWidth)) ? $cardWidth : $this->opts['twitterImageWidth'];
-                $height = (!empty($cardHeight)) ? $cardHeight : $this->opts['twitterImageHeight'];
+                $width = (!empty($cardWidth)) ?  apply_filters('jm_tc_image_width', $cardWidth ) : $this->opts['twitterImageWidth'];
+                $height = (!empty($cardHeight)) ? apply_filters('jm_tc_image_height', $cardHeight ) : $this->opts['twitterImageHeight'];
 
                 return array(
-                    'image:width' => apply_filters('jm_tc_image_width', $width),
-                    'image:height' => apply_filters('jm_tc_image_height', $height)
+                    'image:width' => $width,
+                    'image:height' => $height,
                 );
 
             } elseif (in_array($type, array('photo', 'product', 'summary_large_image', 'player')) && !$post_ID) {
@@ -419,7 +419,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             return array(
                 'app:name:iphone' => $twitteriPhoneName,
-                'app:name:ipad' => $twitteriPhoneName,
+                'app:name:ipad' => $twitteriPadName,
                 'app:name:googleplay' =>  $twitterGooglePlayName,
                 'app:url:iphone' => $twitteriPhoneUrl,
                 'app:url:ipad' =>  $twitteriPadUrl,
@@ -435,14 +435,16 @@ if ( !class_exists('JM_TC_Options') ) {
 
 
         /**
-        * error in config
-        * @return string
-        */
-        protected function error($error = false){
+         * @param string $error
+         * @return bool|string
+         */
+        protected function error($error = ''){
 
-            if ($error && current_user_can( 'edit_posts' ))
+            if ( '' !== $error && current_user_can( 'edit_posts' ) ) {
                 return $error;
+            }
 
+            return false;
         }
 
 
