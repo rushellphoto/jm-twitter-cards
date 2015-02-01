@@ -207,7 +207,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             if( 'gallery' === $cardType ) {
 
-                $query_img = get_post_gallery($post_ID, false);
+                $query_img = get_post_gallery($post_ID, false);//get_post_gallery already checks for $post and has_shortcode()
 
                 if( is_array($query_img) ) {
 
@@ -261,7 +261,7 @@ if ( !class_exists('JM_TC_Options') ) {
             $image = apply_filters('jm_tc_image_source', $image);
 
             return array($img_meta => $image);
-            
+
         }
 
 

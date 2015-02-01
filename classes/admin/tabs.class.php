@@ -11,12 +11,12 @@ if ( ! class_exists('JM_TC_Tabs') ) {
 
         /**
          * Create WP Admin Tabs on-the-fly.
-         * @param array $tabs
+         * @param $tabs
          * @return string
          */
-        public static function admin_tabs($tabs = array()){		
+        public static function admin_tabs($tabs = false){
 
-            if (!$tabs) {
+            if ( !is_array($tabs) ) {
 
                 $tabs = array(
                     'jm_tc' => __('General'),
