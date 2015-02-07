@@ -37,12 +37,17 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $size = 16;
             $class = 'featured-image';
             $tag = 'img';
+            $img = '';
             $close_tag = '';
             $src = 'src';
             $product_meta = '';
             $styles = '';
             $hide = '';
-            $img = ('yes' === $is_og ) ? $img_arr['image'] : $img_arr['image:src'];
+
+            if( isset($img_arr['image'],$img_arr['image:src'])) {
+                $img = ('yes' === $is_og) ? $img_arr['image'] : $img_arr['image:src'];
+            }
+
             $img_summary = '';
             $gallery_meta = '';
 
