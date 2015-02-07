@@ -92,8 +92,8 @@ if ( ! class_exists('JM_TC_Init') ) {
          * Avoid undefined index by registering default options
          */
         public static function on_activation(){
-            $opts = get_option(JM_TC_SLUG);
-            if (!is_array($opts)) update_option(JM_TC_SLUG, self::get_default_options());
+            $opts = get_option('jm_tc');
+            if (!is_array($opts)) update_option('jm_tc', self::get_default_options());
         }
 
 

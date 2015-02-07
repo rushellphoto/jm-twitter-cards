@@ -56,7 +56,6 @@ define( 'JM_TC_METABOX_DIR', JM_TC_DIR . 'classes/meta-box/' );
 define( 'JM_TC_LANG_DIR', dirname(plugin_basename(__FILE__)) . '/languages/' );
 define( 'JM_TC_TEXTDOMAIN', 'jm-tc' );
 define( 'JM_TC_DOC_TEXTDOMAIN', 'jm-tc-doc' );
-define( 'JM_TC_SLUG', 'jm_tc' );
 
 define( 'JM_TC_URL', plugin_dir_url(__FILE__) );
 define( 'JM_TC_METABOX_URL', JM_TC_URL . 'classes/meta-box/' );
@@ -131,7 +130,7 @@ function jm_tc_plugins_loaded(){
 
 add_filter('plugin_action_links_' . plugin_basename(__FILE__),  'jm_tc_settings_action_links', 10, 2);
 function jm_tc_settings_action_links($links){
-    $settings_link = '<a href="' . admin_url('admin.php?page='.JM_TC_SLUG) . '">' . __("Settings") . '</a>';
+    $settings_link = '<a href="' . admin_url('admin.php?page='.'jm_tc') . '">' . __("Settings") . '</a>';
     array_unshift($links, $settings_link);
 
     return $links;
