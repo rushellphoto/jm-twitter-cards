@@ -20,3 +20,29 @@ if (!function_exists('jm_tc_get_options')) {
     }
 }
 
+/**
+ * Remove @ from string
+ * @param $string
+ * @return mixed
+ */
+function jm_tc_remove_at($string){
+    return JM_TC_Utilities::remove_at($string);
+}
+
+/**
+ * Remove line breaks from string
+ * @param $string
+ * @return string
+ */
+function jm_remove_lb($string){
+    return JM_TC_Utilities::remove_lb($string);
+}
+
+/**
+ * Get excerpt by post ID outside the loop
+ * @param $post_id
+ * @return string|void
+ */
+function jm_tc_get_excerpt_by_id($post_id){
+    return JM_TC_Utilities::get_excerpt_by_id($post_id);
+}
