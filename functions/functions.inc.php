@@ -45,3 +45,12 @@ function jm_remove_lb($string){
 function jm_tc_get_excerpt_by_id($post_id){
     return JM_TC_Utilities::get_excerpt_by_id($post_id);
 }
+
+/**
+ * Get post thumbnail weight by ID
+ * @param $post_id
+ * @return string
+ */
+function jm_tc_get_post_thumbnail_weight($post_id){
+    return JM_TC_Thumbs::get_post_thumbnail_weight($post_id);
+}
