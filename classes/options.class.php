@@ -45,7 +45,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
 
-            $cardType = '' !== $cardTypePost ? $cardTypePost : $this->opts['twitterCardType'];
+            $cardType = '' !== $cardTypePost && is_string($cardTypePost) ? $cardTypePost : $this->opts['twitterCardType'];
             $cardType =  apply_filters('jm_tc_card_type', $cardType);
 
             //in case filter is misused
@@ -65,17 +65,15 @@ if ( !class_exists('JM_TC_Options') ) {
 
         public function creatorUsername($post_author = false, $post_ID = false){
 
-            $post = get_post($post_ID);
-            $author_id = $post->post_author;
-
             $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
+            $post = get_post($post_ID);
 
-            if ( false !== $post_author) {
+            if ( is_a($post, 'WP_Post') && false !== $post_author) {
 
                 //to be modified or left with the value 'jm_tc_twitter'
 
                 $cardUsernameKey = $this->opts['twitterUsernameKey'];
-                $cardCreator = get_the_author_meta($cardUsernameKey, $author_id);
+                $cardCreator = get_the_author_meta($cardUsernameKey, $post->post_author);
 
                 $cardCreator = '' !== $cardCreator ? $cardCreator : $this->opts['twitterCreator'];
                 $cardCreator = '@' . JM_TC_Utilities::remove_at($cardCreator);
@@ -205,7 +203,7 @@ if ( !class_exists('JM_TC_Options') ) {
             $cardType = get_post_meta($post_ID, 'twitterCardType', true);
             $image = $this->opts['twitterImage'];
 
-            if( 'gallery' === $cardType ) {
+            if( is_string($cardType) && 'gallery' === $cardType ) {
 
                 $query_img = get_post_gallery($post_ID, false);//get_post_gallery already checks for $post and has_shortcode()
 
@@ -362,7 +360,7 @@ if ( !class_exists('JM_TC_Options') ) {
             $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
             $cardWidth = get_post_meta($post_ID, 'cardImageWidth', true);
             $cardHeight = get_post_meta($post_ID, 'cardImageHeight', true);
-            $type = '' !== $cardTypePost ? $cardTypePost : $this->opts['twitterCardType'];
+            $type = '' !== $cardTypePost && is_string($cardTypePost) ? $cardTypePost : $this->opts['twitterCardType'];
 
             if (in_array($type, array('photo', 'product', 'summary_large_image', 'player'))) {
 
