@@ -38,12 +38,12 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * Retrieve the meta card type
-         * @param bool $post_ID
+         * @param bool $post->ID
          * @return array
          */
-        public function cardType($post_ID = false){
+        public function cardType(WP_Post $post){
 
-            $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
+            $cardTypePost = get_post_meta($post->ID, 'twitterCardType', true);
 
             $cardType = '' !== $cardTypePost && is_string($cardTypePost) ? $cardTypePost : $this->opts['twitterCardType'];
             $cardType =  apply_filters('jm_tc_card_type', $cardType);
@@ -59,16 +59,16 @@ if ( !class_exists('JM_TC_Options') ) {
         /**
          * Retrieve the meta creator
          * @param bool $post_author
-         * @param bool $post_ID
+         * @param WP_Post $post
          * @return array
          */
 
-        public function creatorUsername($post_author = false, $post_ID = false){
+        public function creatorUsername($post_author = false, WP_Post $post){
 
             $cardCreator = '@' . JM_TC_Utilities::remove_at($this->opts['twitterCreator']);
-            $post = get_post($post_ID);
+            $post = get_post($post->ID);
 
-            if ( is_a($post, 'WP_Post') && false !== $post_author) {
+            if ( false !== $post_author) {
 
                 //to be modified or left with the value 'jm_tc_twitter'
 
@@ -99,19 +99,19 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          *
-         * @param $post_ID
+         * @param $post->ID
          * @param $type
          * @return bool|string
          */
-        public static function get_seo_plugin_data($post_ID, $type){
+        public static function get_seo_plugin_data(WP_Post $post, $type){
 
             if (class_exists('WPSEO_Frontend')) {
-                $title = JM_TC_Utilities::strip_meta('_yoast_wpseo_title', $post_ID);
-                $desc = JM_TC_Utilities::strip_meta('_yoast_wpseo_metadesc', $post_ID);
+                $title = JM_TC_Utilities::strip_meta('_yoast_wpseo_title', $post->ID);
+                $desc = JM_TC_Utilities::strip_meta('_yoast_wpseo_metadesc', $post->ID);
 
             } elseif (class_exists('All_in_One_SEO_Pack')) {
-                $title = JM_TC_Utilities::strip_meta('_aioseop_title', $post_ID);
-                $desc = JM_TC_Utilities::strip_meta('_aioseop_description', $post_ID);
+                $title = JM_TC_Utilities::strip_meta('_aioseop_title', $post->ID);
+                $desc = JM_TC_Utilities::strip_meta('_aioseop_description', $post->ID);
             }
 
             if( 'title' === $type ) {
@@ -124,32 +124,27 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * retrieve the title
-         * @param bool $post_ID
+         * @param WP_Post $post
          * @return array
          */
-        public function title($post_ID = false){
+        public function title(WP_Post $post){
 
-            $cardTitle = get_bloginfo('name');
+            $cardTitle = the_title_attribute(array('echo' => false));
+            $customCardTitle = JM_TC_Utilities::strip_meta($this->opts['twitterCardTitle'], $post->ID);
 
-            if (false !== $post_ID) {
+            if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-                $cardTitle = the_title_attribute(array('echo' => false));
-                $customCardTitle = JM_TC_Utilities::strip_meta($this->opts['twitterCardTitle'], $post_ID);
-
-                if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
-
-                    $seo_title = self::get_seo_plugin_data($post_ID, 'title');
-                    $cardTitle = false !== $seo_title ? $seo_title : the_title_attribute(array('echo' => false));
-
-                }
-
-                if ( '' !== $this->opts['twitterCardTitle'] && !is_null($this->opts['twitterCardTitle']) ) {
-
-                    $cardTitle = false !== $customCardTitle ? $customCardTitle : the_title_attribute(array('echo' => false));
-
-                }
+                $seo_title = self::get_seo_plugin_data($post->ID, 'title');
+                $cardTitle = false !== $seo_title ? $seo_title : the_title_attribute(array('echo' => false));
 
             }
+
+            if ( '' !== $this->opts['twitterCardTitle'] && !is_null($this->opts['twitterCardTitle']) ) {
+
+                $cardTitle = false !== $customCardTitle ? $customCardTitle : the_title_attribute(array('echo' => false));
+
+            }
+
 
             $cardTitle = apply_filters('jm_tc_get_title', $cardTitle );
 
@@ -159,31 +154,25 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * retrieve the description
-         * @param bool $post_ID
+         * @param WP_Post $post
          * @return array
          */
-        public function description($post_ID = false){
+        public function description(WP_Post $post){
 
-            $cardDescription = $this->opts['twitterPostPageDesc'];
+            $cardDescription = JM_TC_Utilities::get_excerpt_by_id($post->ID);
+            $customCardDescription = JM_TC_Utilities::strip_meta($this->opts['twitterCardDesc'], $post->ID);
 
-            if (false !== $post_ID) {
+            if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-                $cardDescription = JM_TC_Utilities::get_excerpt_by_id($post_ID);
-                $customCardDescription = JM_TC_Utilities::strip_meta($this->opts['twitterCardDesc'], $post_ID);
+                $seo_desc = self::get_seo_plugin_data($post->ID, 'description');
+                $cardDescription = false !== $seo_desc ? $seo_desc : JM_TC_Utilities::get_excerpt_by_id($post->ID);
 
-                if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
-
-                    $seo_desc = self::get_seo_plugin_data($post_ID, 'description');
-                    $cardDescription = false !== $seo_desc ? $seo_desc : JM_TC_Utilities::get_excerpt_by_id($post_ID);
-
-                }
+            }
 
 
-                if ( '' !== $this->opts['twitterCardDesc'] && !is_null($this->opts['twitterCardDesc']) ) {
+            if ( '' !== $this->opts['twitterCardDesc'] && !is_null($this->opts['twitterCardDesc']) ) {
 
-                    $cardDescription = false !== $customCardDescription ? $customCardDescription : JM_TC_Utilities::get_excerpt_by_id($post_ID);
-
-                }
+                $cardDescription = false !== $customCardDescription ? $customCardDescription : JM_TC_Utilities::get_excerpt_by_id($post->ID);
 
             }
 
@@ -196,18 +185,18 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * retrieve the image
-         * @param bool $post_ID
+         * @param WP_Post $post
          * @return array|bool|string
          */
-        public function image($post_ID = false){
+        public function image(WP_Post $post){
 
-            $cardImage = get_post_meta($post_ID, 'cardImage', true);
-            $cardType = get_post_meta($post_ID, 'twitterCardType', true);
+            $cardImage = get_post_meta($post->ID, 'cardImage', true);
+            $cardType = get_post_meta($post->ID, 'twitterCardType', true);
             $image = $this->opts['twitterImage'];
 
             if( is_string($cardType) && 'gallery' === $cardType ) {
 
-                $query_img = get_post_gallery($post_ID, false);//get_post_gallery already checks for $post and has_shortcode()
+                $query_img = get_post_gallery($post->ID, false);//get_post_gallery already checks for $post and has_shortcode()
 
                 if( is_array($query_img) ) {
 
@@ -233,16 +222,14 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            if (false === $post_ID) {
-                $image = $this->opts['twitterImage'];
-            } elseif ('' !== $cardImage) {
+            if ('' !== $cardImage) {
                 $image = $cardImage;
             }
 
-            if ('' !== get_the_post_thumbnail($post_ID)) {
+            if ('' !== get_the_post_thumbnail($post->ID)) {
 
-                $size = JM_TC_Thumbs::thumbnail_sizes($post_ID);
-                $image_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post_ID), $size);
+                $size = JM_TC_Thumbs::thumbnail_sizes($post->ID);
+                $image_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), $size);
                 $image = $image_attributes[0];
 
                 if ('' !== $cardImage) { // cardImage is set
@@ -253,7 +240,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             if ('attachment' == get_post_type()) {
 
-                $image = wp_get_attachment_url($post_ID);
+                $image = wp_get_attachment_url($post->ID);
             }
 
             //In case Open Graph is on
@@ -267,19 +254,19 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * Product additional fields
-         * @param $post_ID
-         * @return array|bool|void
+         * @param WP_Post $post
+         * @return array|bool|string
          */
-        public function product($post_ID){
+        public function product(WP_Post $post){
 
-            $cardType = apply_filters('jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
+            $cardType = apply_filters('jm_tc_card_type', get_post_meta($post->ID, 'twitterCardType', true));
 
             if ('product' === $cardType) {
 
-                $data1  = apply_filters( 'jm_tc_product_field-data1',get_post_meta($post_ID, 'cardData1', true) );
-                $label1 = apply_filters( 'jm_tc_product_field-label1', get_post_meta($post_ID, 'cardLabel1', true) );
-                $data2  = apply_filters( 'jm_tc_product_field-data2', get_post_meta($post_ID, 'cardData2', true) );
-                $label2 = apply_filters( 'jm_tc_product_field-label2', get_post_meta($post_ID, 'cardLabel2', true) );
+                $data1  = apply_filters( 'jm_tc_product_field-data1',get_post_meta($post->ID, 'cardData1', true) );
+                $label1 = apply_filters( 'jm_tc_product_field-label1', get_post_meta($post->ID, 'cardLabel1', true) );
+                $data2  = apply_filters( 'jm_tc_product_field-data2', get_post_meta($post->ID, 'cardData2', true) );
+                $label2 = apply_filters( 'jm_tc_product_field-label2', get_post_meta($post->ID, 'cardLabel2', true) );
 
                 if ( '' !== $data1 && '' !== $label1 && '' !== $data2 && '' !== $label2 ) {
                     return array(
@@ -299,19 +286,19 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * Player additional fields
-         * @param $post_ID
+         * @param WP_Post $post
          * @return array|bool|string
          */
-        public function player($post_ID){
+        public function player(WP_Post $post){
 
-            $cardType = apply_filters( 'jm_tc_card_type', get_post_meta($post_ID, 'twitterCardType', true));
+            $cardType = apply_filters( 'jm_tc_card_type', get_post_meta($post->ID, 'twitterCardType', true));
 
             if ('player' === $cardType ) {
 
-                $playerUrl = apply_filters( 'jm_tc_player_url', get_post_meta($post_ID, 'cardPlayer', true) );
-                $playerStreamUrl = apply_filters( 'jm_tc_player_stream_url', get_post_meta($post_ID, 'cardPlayerStream', true) );
-                $playerWidth = apply_filters( 'jm_tc_player_width', get_post_meta($post_ID, 'cardPlayerWidth', true) );
-                $playerHeight = apply_filters( 'jm_tc_player_height', get_post_meta($post_ID, 'cardPlayerHeight', true) );
+                $playerUrl = apply_filters( 'jm_tc_player_url', get_post_meta($post->ID, 'cardPlayer', true) );
+                $playerStreamUrl = apply_filters( 'jm_tc_player_stream_url', get_post_meta($post->ID, 'cardPlayerStream', true) );
+                $playerWidth = apply_filters( 'jm_tc_player_width', get_post_meta($post->ID, 'cardPlayerWidth', true) );
+                $playerHeight = apply_filters( 'jm_tc_player_height', get_post_meta($post->ID, 'cardPlayerHeight', true) );
                 $defaultPlayerWidth = apply_filters('jm_tc_player_default_width', 435 );
                 $defaultPlayerHeight = apply_filters('jm_tc_player_default_height', 251 );
 
@@ -353,15 +340,15 @@ if ( !class_exists('JM_TC_Options') ) {
 
         /**
          * Image Width and Height
-         * @param bool $post_ID
+         * @param WP_Post $post
          * @return array|bool
          */
 
-        public function cardDim($post_ID = false){
+        public function cardDim(WP_Post $post){
 
-            $cardTypePost = get_post_meta($post_ID, 'twitterCardType', true);
-            $cardWidth = get_post_meta($post_ID, 'cardImageWidth', true);
-            $cardHeight = get_post_meta($post_ID, 'cardImageHeight', true);
+            $cardTypePost = get_post_meta($post->ID, 'twitterCardType', true);
+            $cardWidth = get_post_meta($post->ID, 'cardImageWidth', true);
+            $cardHeight = get_post_meta($post->ID, 'cardImageHeight', true);
             $type = '' !== $cardTypePost && is_string($cardTypePost) ? $cardTypePost : $this->opts['twitterCardType'];
 
             if (in_array($type, array('photo', 'product', 'summary_large_image', 'player'))) {
@@ -374,12 +361,6 @@ if ( !class_exists('JM_TC_Options') ) {
                     'image:height' => $height,
                 );
 
-            } elseif (in_array($type, array('photo', 'product', 'summary_large_image', 'player')) && false !== $post_ID) {
-
-                return array(
-                    'image:width' => $this->opts['twitterCardWidth'],
-                    'image:height' => $this->opts['twitterCardHeight']
-                );
             }
 
             return false;

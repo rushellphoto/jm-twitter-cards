@@ -54,48 +54,45 @@ if (!class_exists('JM_TC_Markup')) {
                 && !is_home()
                 && !is_404()
                 && !is_tag()
-
             ) {
 
                 // safer than the global $post => seems killed on a lot of install :/
-                $post_ID = get_queried_object()->ID;
+                $post_obj = get_queried_object();
 
                 $this->html_comments();
 
                 /* most important meta */
-                $this->display_markup($options->cardType($post_ID));
-                $this->display_markup($options->creatorUsername(true));
+                $this->display_markup($options->cardType($post_obj));
+                $this->display_markup($options->creatorUsername(true, $post_obj));
                 $this->display_markup($options->siteUsername());
-                $this->display_markup($options->title($post_ID));
-                $this->display_markup($options->description($post_ID));
-                $this->display_markup($options->image($post_ID));
+                $this->display_markup($options->title($post_obj));
+                $this->display_markup($options->description($post_obj));
+                $this->display_markup($options->image($post_obj));
 
 
                 /* secondary meta */
-                $this->display_markup($options->cardDim($post_ID));
-                $this->display_markup($options->product($post_ID));
-                $this->display_markup($options->player($post_ID));
+                $this->display_markup($options->cardDim($post_obj));
+                $this->display_markup($options->product($post_obj));
+                $this->display_markup($options->player($post_obj));
                 $this->display_markup($options->deeplinking());
 
                 $this->html_comments(true);
-
 
             }
 
-            if (is_home() || is_front_page()) {
+            if(is_home() || is_front_page()) {
 
                 $this->html_comments();
-
-                $this->display_markup($options->cardType());
+                $this->display_markup(array('card' => $this->opts['twitterCardType']));
+                $this->display_markup(array('creator' => $this->opts['twitterCreator']));
                 $this->display_markup($options->siteUsername());
-                $this->display_markup($options->creatorUsername());
-                $this->display_markup($options->title());
-                $this->display_markup($options->description());
-                $this->display_markup($options->image());
-                $this->display_markup($options->cardDim());
+                $this->display_markup(array('title' => get_bloginfo('name')));
+                $this->display_markup(array('description' => $this->opts['twitterPostPageDesc']));
+                $this->display_markup(array('image' => $this->opts['twitterImage']));
+                $this->display_markup(array('image:width' => $this->opts['twitterImageWidth'], 'image:height' => $this->opts['twitterImageHeight']));
                 $this->display_markup($options->deeplinking());
-
                 $this->html_comments(true);
+
             }
 
         }
@@ -111,7 +108,7 @@ if (!class_exists('JM_TC_Markup')) {
                 foreach ($data as $name => $value) {
 
                     if ( '' !== $value) {
-                        
+
                         $is_og = 'twitter';
                         $name_tag = 'name';
 
@@ -122,7 +119,7 @@ if (!class_exists('JM_TC_Markup')) {
 
                         }
 
-                        echo $meta = '<meta ' . $name_tag . '="' . $is_og . ':' . $name . '" content="' . $value . '">' . "\n";
+                        echo $meta = '<meta ' . sprintf('%3$s="%2$s:%1$s"',$name, $is_og, $name_tag ) . ' content="' . sprintf('%s', $value) . '">' . "\n";
 
                     }
 
@@ -130,7 +127,7 @@ if (!class_exists('JM_TC_Markup')) {
 
             } elseif (is_string($data)) {
 
-                echo $meta = '<!-- [(-_-)@ ' . $data . ' @(-_-)] -->' . "\n";
+                echo $meta = sprintf('<!-- [(-_-)@ %s @(-_-)] -->', $data) . "\n";
 
             }
 
