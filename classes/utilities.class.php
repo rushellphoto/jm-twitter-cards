@@ -80,10 +80,11 @@ if (!class_exists('JM_TC_Utilities')) {
         public static function display_footage($data, $provider = 'http://www.youtube.com/watch?v='){
 
             $output = '';
+            $args = array( 'width' => 400, 'height' => 300);
 
             if (is_array($data)) {
                 foreach ($data as $label => $id)
-                    $output .= '<div class="inbl"><h3 id="' . $id . '">' . $label . '</h3>' . '<p>' . wp_oembed_get(esc_url($provider . $id)) . '</p></div>';
+                    $output .= '<div class="inbl"><h3 id="' . $id . '">' . $label . '</h3>' . '<p>' . wp_oembed_get(esc_url($provider . $id), $args) . '</p></div>';
             }
 
             return $output;
