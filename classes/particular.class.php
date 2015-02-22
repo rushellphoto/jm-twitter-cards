@@ -67,8 +67,7 @@ if (!class_exists('JM_TC_Particular')) {
          * @return string
          */
         function modify_excerpt(){
-            global $post;
-            return $this->get_excerpt_from_far_far_away($post->ID);
+            return $this->get_excerpt_from_far_far_away(get_queried_object_id());
         }
 
         /**

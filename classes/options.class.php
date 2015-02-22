@@ -98,10 +98,10 @@ if ( !class_exists('JM_TC_Options') ) {
         }
 
         /**
-         * Retrieve plugin data with fallbacks
+         *
          * @param $post_ID
          * @param $type
-         * @return bool|null|string|void
+         * @return bool|string
          */
         public static function get_seo_plugin_data($post_ID, $type){
 
@@ -114,11 +114,11 @@ if ( !class_exists('JM_TC_Options') ) {
                 $desc = JM_TC_Utilities::strip_meta('_aioseop_description', $post_ID);
             }
 
-           if( 'title' === $type ) {
-               return false !== $title ? $title :  the_title_attribute( array('echo' => false) );
-           }
+            if( 'title' === $type ) {
+               return $title;
+            }
 
-            return false !== $desc ? $desc : JM_TC_Utilities::get_excerpt_by_id($post_ID);
+            return $desc;
 
         }
 
@@ -138,13 +138,14 @@ if ( !class_exists('JM_TC_Options') ) {
 
                 if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-                    $cardTitle = self::get_seo_plugin_data($post_ID, 'title');
+                    $seo_title = self::get_seo_plugin_data($post_ID, 'title');
+                    $cardTitle = false !== $seo_title ? $seo_title : the_title_attribute(array('echo' => false));
 
                 }
 
                 if ( '' !== $this->opts['twitterCardTitle'] && !is_null($this->opts['twitterCardTitle']) ) {
 
-                    $cardTitle = false !==  $customCardTitle ? $customCardTitle : the_title_attribute(array('echo' => false));
+                    $cardTitle = false !== $customCardTitle ? $customCardTitle : the_title_attribute(array('echo' => false));
 
                 }
 
@@ -172,7 +173,8 @@ if ( !class_exists('JM_TC_Options') ) {
 
                 if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-                    $cardDescription = self::get_seo_plugin_data($post_ID, 'description');
+                    $seo_desc = self::get_seo_plugin_data($post_ID, 'description');
+                    $cardDescription = false !== $seo_desc ? $seo_desc : JM_TC_Utilities::get_excerpt_by_id($post_ID);
 
                 }
 
@@ -292,13 +294,13 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return $post_ID;
+            return false;
         }
 
         /**
          * Player additional fields
          * @param $post_ID
-         * @return array|bool|void
+         * @return array|bool|string
          */
         public function player($post_ID){
 
@@ -344,7 +346,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            return $post_ID;
+            return false;
 
         }
 
@@ -380,7 +382,7 @@ if ( !class_exists('JM_TC_Options') ) {
                 );
             }
 
-            return $post_ID;
+            return false;
         }
 
 
