@@ -10,7 +10,14 @@ Want to fork? Please fork the trunk version and not the master version, URL is h
 
 ## Changelog ##
 
-### 02 Jan 2015
+### 5.5
+* 22 Feb 2015
+* bugfixes
+* code beauty, code standards
+* refactor code
+
+### 5.4.4
+* 02 Jan 2015
 * bugfixes
 * delete fancy rwd menu in admin (not compatible with no js and not very handy) and replace it with WP UI
 * improve phpdoc
