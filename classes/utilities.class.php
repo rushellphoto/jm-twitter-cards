@@ -9,6 +9,11 @@ if (!class_exists('JM_TC_Utilities')) {
 
     class JM_TC_Utilities{
 
+
+        public static function get_seo_meta_keys(){
+
+        }
+
         /**
          * @param $at
          * @return mixed

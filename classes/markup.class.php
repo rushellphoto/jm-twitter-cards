@@ -111,16 +111,15 @@ if (!class_exists('JM_TC_Markup')) {
                 foreach ($data as $name => $value) {
 
                     if ( '' !== $value) {
+                        
+                        $is_og = 'twitter';
+                        $name_tag = 'name';
 
                         if ( 'yes' === $this->opts['twitterCardOg'] && in_array($name, array('title', 'description', 'image', 'image:width', 'image:height'))) {
 
                             $is_og = 'og';
                             $name_tag = 'property';
 
-                        } else {
-
-                            $is_og = 'twitter';
-                            $name_tag = 'name';
                         }
 
                         echo $meta = '<meta ' . $name_tag . '="' . $is_og . ':' . $name . '" content="' . $value . '">' . "\n";
