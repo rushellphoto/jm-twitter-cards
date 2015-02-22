@@ -10,10 +10,10 @@ if ( ! class_exists('JM_TC_Preview') ) {
     class JM_TC_Preview{
         /**
          * output cards preview
+         * @param WP_Post $post
          * @return string
-         * @param integer $post_ID
          */
-        public static function show_preview($post_ID){
+        public static function show_preview(WP_Post $post){
 
             $options = new JM_TC_Options;
             $opts = jm_tc_get_options();
@@ -21,16 +21,16 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $is_og = $opts['twitterCardOg'];
 
             /* most important meta */
-            $cardType_arr = $options->cardType($post_ID);
-            $creator_arr = $options->creatorUsername(true);
+            $cardType_arr = $options->cardType($post);
+            $creator_arr = $options->creatorUsername(true, $post);
             $site_arr = $options->siteUsername();
-            $title_arr = $options->title($post_ID);
-            $description_arr = $options->description($post_ID);
-            $img_arr = $options->image($post_ID);
+            $title_arr = $options->title($post);
+            $description_arr = $options->description($post);
+            $img_arr = $options->image($post);
 
 
             /* secondary meta */
-            $product_arr = $options->product($post_ID);
+            $product_arr = $options->product($post);
 
             // default
             $app = '';
