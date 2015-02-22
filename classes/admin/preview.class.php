@@ -28,7 +28,6 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $description_arr = $options->description($post);
             $img_arr = $options->image($post);
 
-
             /* secondary meta */
             $product_arr = $options->product($post);
 
@@ -44,9 +43,13 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $styles = '';
             $hide = '';
 
-            if( isset($img_arr['image'],$img_arr['image:src'])) {
+
+            if( isset($img_arr['image']) ) {
                 $img = ('yes' === $is_og) ? $img_arr['image'] : $img_arr['image:src'];
             }
+
+
+
 
             $img_summary = '';
             $gallery_meta = '';
