@@ -83,6 +83,7 @@ if (!class_exists('JM_TC_Markup')) {
             if(is_home() || is_front_page()) {
 
                 $this->html_comments();
+
                 $this->display_markup(array('card' => $this->opts['twitterCardType']));
                 $this->display_markup(array('creator' => $this->opts['twitterCreator']));
                 $this->display_markup($options->siteUsername());
@@ -91,6 +92,7 @@ if (!class_exists('JM_TC_Markup')) {
                 $this->display_markup(array('image' => $this->opts['twitterImage']));
                 $this->display_markup(array('image:width' => $this->opts['twitterImageWidth'], 'image:height' => $this->opts['twitterImageHeight']));
                 $this->display_markup($options->deeplinking());
+
                 $this->html_comments(true);
 
             }
