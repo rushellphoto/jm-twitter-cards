@@ -57,7 +57,7 @@ if (!class_exists('JM_TC_Markup')) {
             ) {
 
                 // safer than the global $post => seems killed on a lot of install :/
-                $post_obj = get_queried_object();
+                $post_obj = $GLOBALS['post'];
 
                 $this->html_comments();
 
