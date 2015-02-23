@@ -35,9 +35,9 @@ if (!class_exists('JM_TC_Markup')) {
         public function html_comments($end = false){
 
             if (!$end)
-                echo "\n" . '<!-- JM Twitter Cards by Julien Maury ' . JM_TC_VERSION . ' -->' . "\n";
+                echo PHP_EOL . '<!-- JM Twitter Cards by Julien Maury ' . JM_TC_VERSION . ' -->' . PHP_EOL;
             else
-                echo '<!-- /JM Twitter Cards ' . JM_TC_VERSION . ' -->' . "\n\n";
+                echo '<!-- /JM Twitter Cards ' . JM_TC_VERSION . ' -->' . PHP_EOL;
         }
 
 
@@ -120,7 +120,7 @@ if (!class_exists('JM_TC_Markup')) {
 
                         }
 
-                        echo $meta = '<meta ' . sprintf('%3$s="%2$s:%1$s"',$name, $is_og, $name_tag ) . ' content="' . sprintf('%s', $value) . '">' . "\n";
+                        echo $meta = '<meta ' . sprintf('%3$s="%2$s:%1$s"',$name, $is_og, $name_tag ) . ' content="' . sprintf('%s', $value) . '">' . PHP_EOL;
 
                     }
 
@@ -128,7 +128,7 @@ if (!class_exists('JM_TC_Markup')) {
 
             } elseif (is_string($data)) {
 
-                echo $meta = sprintf('<!-- [(-_-)@ %s @(-_-)] -->', $data) . "\n";
+                echo $meta = sprintf('<!-- [(-_-)@ %s @(-_-)] -->', $data) . PHP_EOL;
 
             }
 
