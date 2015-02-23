@@ -199,7 +199,11 @@ if ( !class_exists('JM_TC_Metabox') ) {
             if (!class_exists('cmb_Meta_Box'))
                 return;
 
-            $post_types = get_post_types();
+            $post_types = apply_filters( 'jm_tc_post_types', get_post_types(), $meta_boxes );
+
+            if( !is_array($post_types) ) {
+                $post_types = get_post_types();
+            }
 
             // 1st meta box
             $meta_boxes['jm_tc_metabox'] = array(
