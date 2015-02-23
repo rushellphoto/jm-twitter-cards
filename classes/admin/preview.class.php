@@ -36,7 +36,7 @@ if ( ! class_exists('JM_TC_Preview') ) {
             $size = 16;
             $class = 'featured-image';
             $tag = 'img';
-            $img = $opts['twitterImage'];
+            $img = '';
             $close_tag = '';
             $src = 'src';
             $product_meta = '';
