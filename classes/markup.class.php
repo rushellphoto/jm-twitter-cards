@@ -69,14 +69,13 @@ if (!class_exists('JM_TC_Markup')) {
                 $this->display_markup($options->description($post_obj));
                 $this->display_markup($options->image($post_obj));
 
-
                 /* secondary meta */
                 $this->display_markup($options->cardDim($post_obj));
                 $this->display_markup($options->product($post_obj));
                 $this->display_markup($options->player($post_obj));
                 $this->display_markup($options->deeplinking());
 
-                $this->html_comments(true);
+                $this->html_comments('Marion');
 
             }
 
@@ -93,7 +92,7 @@ if (!class_exists('JM_TC_Markup')) {
                 $this->display_markup(array('image:width' => $this->opts['twitterImageWidth'], 'image:height' => $this->opts['twitterImageHeight']));
                 $this->display_markup($options->deeplinking());
 
-                $this->html_comments(true);
+                $this->html_comments('Marion');
 
             }
 
