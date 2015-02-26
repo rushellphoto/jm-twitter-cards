@@ -35,7 +35,7 @@ if (!class_exists('JM_TC_Markup')) {
         public function html_comments($end = false){
 
             if (!$end)
-                echo PHP_EOL . '<!-- JM Twitter Cards by Julien Maury ' . JM_TC_VERSION . ' -->' . PHP_EOL;
+                echo '<!-- JM Twitter Cards by Julien Maury ' . JM_TC_VERSION . ' -->' . PHP_EOL;
             else
                 echo '<!-- /JM Twitter Cards ' . JM_TC_VERSION . ' -->' . PHP_EOL;
         }
