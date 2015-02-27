@@ -238,7 +238,7 @@ if ( !class_exists('JM_TC_Options') ) {
 
             }
 
-            if ('attachment' == get_post_type()) {
+            if ('attachment' === get_post_type()) {
 
                 $image = wp_get_attachment_url($post->ID);
             }
