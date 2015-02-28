@@ -138,7 +138,7 @@ if ( ! class_exists('JM_TC_Init') ) {
                 'twitterCardMetabox' => 'yes',
                 'twitterProfile' => 'yes',
                 'twitterPostPageTitle' => get_bloginfo('name'), // filter used by plugin to customize title
-                'twitterPostPageDesc' => __('Welcome to', JM_TC_TEXTDOMAIN) . ' ' . get_bloginfo('name') . ' - ' . __('see blog posts', JM_TC_TEXTDOMAIN),
+                'twitterPostPageDesc' => __('Welcome to', JM_TC_TEXTDOMAIN) . ' ' . get_bloginfo('name'),
                 'twitterCardTitle' => '',
                 'twitterCardDesc' => '',
                 'twitterCardExcerpt' => 'no',
