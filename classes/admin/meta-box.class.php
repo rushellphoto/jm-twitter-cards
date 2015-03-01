@@ -84,10 +84,10 @@ class Metabox{
             $args['desc'] = Thumbs::get_post_thumbnail_weight($field->object_id);
 
 
-        global $post;
+        $post_instance = $GLOBALS['post'];
 
         if ( 'preview_title' === $field->id() )
-            $args['desc'] = Preview::show_preview($post);
+            $args['desc'] = Preview::show_preview($post_instance);
 
         return $args;
     }
@@ -104,11 +104,11 @@ class Metabox{
         switch ($context) {
 
             case 'profile' :
-                $trigger = $this->opts['twitterProfile'] == 'yes' ? 'on' : 'off';
+                $trigger = 'yes' === $this->opts['twitterProfile'] ? 'on' : 'off';
                 break;
 
             case 'post' :
-                $trigger = $this->opts['twitterCardMetabox'] == 'yes' ? 'on' : 'off';
+                $trigger = 'yes' === $this->opts['twitterCardMetabox'] ? 'on' : 'off';
                 break;
 
             default:
