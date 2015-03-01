@@ -17,7 +17,7 @@ if (!defined('JM_TC_VERSION')) {
     //plugin list
     $slugs = array(
         'jm-wp-cookie-bar' => 'JM WP Cookie Bar',
-        'jm-wp-d-vine' => 'JM WP D-Vine',
+        'jm-twit-this-comment' => 'JM Tweet This Comment',
         'jm-instagram-feed-widget' => 'JM Instagram Feed Widget'
     );
 

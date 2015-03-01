@@ -90,7 +90,7 @@ function _jm_tc_plugins_loaded(){
 
 add_filter('plugin_action_links' . plugin_basename(__FILE__), '_jm_tc_settings_action_links', 10, 2);
 function _jm_tc_settings_action_links($links){
-    $settings_link = '<a href="' . admin_url('admin.php?page='.'jm_tc') . '">' . __("Settings") . '</a>';
+    $settings_link = '<a href="' .  add_query_arg( array('page' => 'jm_tc' ), admin_url('admin.php') ) . '">' . __("Settings") . '</a>';
     array_unshift($links, $settings_link);
 
     return $links;

@@ -77,14 +77,19 @@ class Utilities{
      * @param string $provider
      * @return string
      */
-    public static function display_footage($data, $provider = 'http://www.youtube.com/watch?v='){
+    public static function display_footage($data, $provider = 'YouTube'){
 
         $output = '';
         $args = array( 'width' => 400, 'height' => 300);
 
-        if (is_array($data)) {
-            foreach ($data as $label => $id)
-                $output .= '<div class="inbl"><h3 id="' . $id . '">' . $label . '</h3>' . '<p>' . wp_oembed_get(esc_url($provider . $id), $args) . '</p></div>';
+        if( 'YouTube' === $provider ) {
+            if (is_array($data)) {
+                foreach ($data as $label => $id) {
+                    $url = add_query_arg( array('v' => $id  ) , 'https://www.youtube.com/watch' );
+                    $output .= '<div class="inbl"><h3 id="' . $id . '">' . $label . '</h3>' . '<p>' . wp_oembed_get($url, $args) . '</p></div>';
+                }
+            }
+
         }
 
         return $output;
