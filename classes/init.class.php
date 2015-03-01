@@ -100,7 +100,14 @@ class Init{
     /**
      * Avoid undefined index by registering default options
      */
-    public static function activate(){
+    protected function activate(){
+
+        // Check PHP Version and deactivate & die if it doesn't meet minimum requirements.
+        if ( 0 > check_version( PHP_VERSION, '5.7' ) ){
+            deactivate_plugins( plugin_basename( __FILE__ ) );
+            wp_die('This plugin requires PHP Version 5.3.');
+        }
+
 
         if (!is_multisite()) {
 

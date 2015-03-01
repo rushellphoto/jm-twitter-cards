@@ -43,13 +43,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 defined('ABSPATH')
 or die('No direct load !');
 
-
-// As we use namespacing now plugin requires PHP 5.3 or newer
-if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
-    trigger_error( 'The Twitter plugin for WordPress requires PHP version 5.4 or higher.' );
-    return;
-}
-
-
 // Load all the things
 require_once( dirname( __FILE__ ) . '/jm-tc-loader.php' );

@@ -123,7 +123,7 @@ class Import_Export{
 
         update_option('jm_tc', $settings);
 
-        wp_safe_redirect(admin_url('admin.php?page='.'jm_tc'));
+        wp_safe_redirect( add_query_arg( array('page' => 'jm_tc' ), admin_url('admin.php') ) );
         exit;
 
     }

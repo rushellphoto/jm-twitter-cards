@@ -54,7 +54,6 @@ load_files(JM_TC_CLASS_DIR, array('init', 'utilities', 'particular', 'thumbs', '
  */
 register_activation_hook(__FILE__, array('\jm_twitter_cards\Init', 'activate'));
 
-
 /**
  * Everything that should trigger early
  */
@@ -71,14 +70,13 @@ function _jm_tc_plugins_loaded(){
 
     }
 
-    //langs
+    //languages
     load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
     $GLOBALS['tc-disable'] = new \jm_twitter_cards\Disable;
     $GLOBALS['tc-particular'] = new \jm_twitter_cards\Particular;
     $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;
     $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
-
 
 }
 
@@ -88,9 +86,10 @@ function _jm_tc_plugins_loaded(){
  * @return mixed
  */
 
-add_filter('plugin_action_links' . plugin_basename(__FILE__), '_jm_tc_settings_action_links', 10, 2);
+add_filter( 'plugin_action_links_jm-twitter-cards/jm-twitter-cards.php', '_jm_tc_settings_action_links', 10, 2);
 function _jm_tc_settings_action_links($links){
-    $settings_link = '<a href="' .  add_query_arg( array('page' => 'jm_tc' ), admin_url('admin.php') ) . '">' . __("Settings") . '</a>';
+
+    $settings_link = '<a href="' . add_query_arg(array('page' => 'jm_tc'), admin_url('admin.php')) . '">' . __("Settings") . '</a>';
     array_unshift($links, $settings_link);
 
     return $links;
