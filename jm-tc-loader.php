@@ -1,13 +1,10 @@
 <?php
-namespace jm_twitter_cards;
-
 //Add some security, no direct load !
 defined('ABSPATH')
 or die('No direct load !');
 
 
 //Constantly constant
-define( 'JM_TC_NS', '\\' .  __NAMESPACE__ . '\\' );
 define( 'JM_TC_VERSION', '5.5' );
 define( 'JM_TC_DIR', plugin_dir_path(__FILE__) );
 define( 'JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/' );
@@ -55,32 +52,32 @@ load_files(JM_TC_CLASS_DIR, array('init', 'utilities', 'particular', 'thumbs', '
 /**
  * On activation
  */
-\register_activation_hook(__FILE__, array( JM_TC_NS .  'Init', 'activate'));
+register_activation_hook(__FILE__, array('\jm_twitter_cards\Init', 'activate'));
 
 
 /**
  * Everything that should trigger early
  */
-add_action( 'plugins_loaded', JM_TC_NS . 'plugins_loaded' );
-function plugins_loaded(){
+add_action( 'plugins_loaded', 'jm_tc_plugins_loaded' );
+function jm_tc_plugins_loaded(){
 
     if (is_admin()) {
 
         load_plugin_textdomain(JM_TC_DOC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-        $GLOBALS['tc-admin'] = new Admin;
-        $GLOBALS['tc-import-export'] = new Import_Export;
-        $GLOBALS['tc-metabox'] =new Metabox;
+        $GLOBALS['tc-admin'] = new \jm_twitter_cards\Admin;
+        $GLOBALS['tc-import-export'] = new \jm_twitter_cards\Import_Export;
+        $GLOBALS['tc-metabox'] = new \jm_twitter_cards\Metabox;
 
     }
 
     //langs
     load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-    $GLOBALS['tc-init'] = new Init;
-    $GLOBALS['tc-disable'] = new Disable;
-    $GLOBALS['tc-particular'] = new Particular;
-    $GLOBALS['tc-markup'] = new Markup;
+    $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
+    $GLOBALS['tc-disable'] = new \jm_twitter_cards\Disable;
+    $GLOBALS['tc-particular'] = new \jm_twitter_cards\Particular;
+    $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;
 
 }
 
@@ -90,8 +87,8 @@ function plugins_loaded(){
  * @return mixed
  */
 
-add_filter('plugin_action_links', JM_TC_NS . 'settings_action_links', 10, 2);
-function settings_action_links($links){
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'jm_tc_settings_action_links', 10, 2 );
+function jm_tc_settings_action_links($links){
     $settings_link = '<a href="' . admin_url('admin.php?page='.'jm_tc') . '">' . __("Settings") . '</a>';
     array_unshift($links, $settings_link);
 
