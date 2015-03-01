@@ -83,11 +83,10 @@ class Metabox{
         if ( 'twitter_featured_size' === $field->id() )
             $args['desc'] = Thumbs::get_post_thumbnail_weight($field->object_id);
 
-
-        $post_instance = $GLOBALS['post'];
+        global $post;
 
         if ( 'preview_title' === $field->id() )
-            $args['desc'] = Preview::show_preview($post_instance);
+            $args['desc'] = Preview::show_preview($post);
 
         return $args;
     }
