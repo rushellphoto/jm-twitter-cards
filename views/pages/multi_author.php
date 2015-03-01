@@ -1,4 +1,6 @@
 <?php
+namespace jm_twitter_cards;
+
 if (!defined('JM_TC_VERSION')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
@@ -16,8 +18,7 @@ if (!defined('JM_TC_VERSION')) {
      * Fields for admin page multi-options
      * @return array
      */
-    function jm_tc_multi_author_options()
-    {
+    function jm_tc_multi_author_options(){
         $plugin_options = array(
             'id' => 'jm_tc',
             'show_on' => array('key' => 'options-page', 'value' => array('jm_tc_multi_author',),),
