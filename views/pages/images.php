@@ -1,4 +1,6 @@
 <?php
+namespace jm_twitter_cards;
+
 if (!defined('JM_TC_VERSION')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
@@ -9,7 +11,7 @@ if (!defined('JM_TC_VERSION')) {
 <div class="wrap">
     <h2>JM Twitter Cards : <?php echo esc_html(get_admin_page_title()); ?></h2>
 
-    <?php echo JM_TC_Tabs::admin_tabs(); ?>
+    <?php echo Tabs::admin_tabs(); ?>
 
     <?php
     /**
@@ -110,10 +112,10 @@ if (!defined('JM_TC_VERSION')) {
     }
 
     ?>
-    <?php cmb_metabox_form(jm_tc_image_options(), JM_TC_Admin::key()); ?>
+    <?php cmb_metabox_form(jm_tc_image_options(), Admin::key()); ?>
 
     <div class="doc-valid">
-        <?php echo JM_TC_Admin::docu_links(4); ?>
+        <?php echo Admin::docu_links(4); ?>
     </div>
 
 </div>

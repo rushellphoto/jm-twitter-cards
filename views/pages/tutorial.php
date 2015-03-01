@@ -1,4 +1,6 @@
 <?php
+namespace jm_twitter_cards;
+
 if (!defined('JM_TC_VERSION')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
@@ -9,7 +11,7 @@ if (!defined('JM_TC_VERSION')) {
 <div class="wrap">
     <h2>JM Twitter Cards : <?php echo esc_html(get_admin_page_title()); ?></h2>
 
-    <?php echo JM_TC_Tabs::admin_tabs(); ?>
+    <?php echo Tabs::admin_tabs(); ?>
 
     <?php
     $data = array(
@@ -19,7 +21,7 @@ if (!defined('JM_TC_VERSION')) {
         __('Preview', JM_TC_TEXTDOMAIN) => 'WniGVE09-IQ',
     );
 
-    $tutorials = JM_TC_Utilities::display_footage($data);
+    $tutorials = Utilities::display_footage($data);
     echo $tutorials;
     ?>
 </div>

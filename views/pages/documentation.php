@@ -1,4 +1,6 @@
 <?php
+namespace jm_twitter_cards;
+
 if (!defined('JM_TC_VERSION')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
@@ -9,7 +11,7 @@ if (!defined('JM_TC_VERSION')) {
 <div class="wrap">
     <h2>JM Twitter Cards : <?php echo esc_html(get_admin_page_title()); ?></h2>
 
-    <?php echo JM_TC_Tabs::admin_tabs(); ?>
+    <?php echo Tabs::admin_tabs(); ?>
 
     <p><?php _e('Updated', JM_TC_DOC_TEXTDOMAIN); ?> : 12/10/2014</p>
 

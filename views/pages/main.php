@@ -1,4 +1,6 @@
 <?php
+namespace jm_twitter_cards;
+
 if (!defined('JM_TC_VERSION')) {
     header('Status: 403 Forbidden');
     header('HTTP/1.1 403 Forbidden');
@@ -10,11 +12,11 @@ if (!defined('JM_TC_VERSION')) {
 
     <h2>JM Twitter Cards : <?php echo esc_html(get_admin_page_title()); ?></h2>
 
-    <?php echo JM_TC_Tabs::admin_tabs(); ?>
+    <?php echo Tabs::admin_tabs(); ?>
 
     <?php cmb_metabox_form($this->option_fields(), self::$key); ?>
     <div class="doc-valid">
-        <?php echo self::docu_links(0); ?>
+        <?php echo Admin::docu_links(0); ?>
     </div>
     <p class="bold"><?php _e('Get more <br />from 140 characters', JM_TC_TEXTDOMAIN); ?> </p>
     <p class="sub-bold"><?php _e('with Twitter Cards', JM_TC_TEXTDOMAIN); ?></p>
