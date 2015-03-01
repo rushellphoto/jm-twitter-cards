@@ -182,13 +182,11 @@ class Admin{
     }
 
     /**
-     * Enqueue scripts conditionnally in admin
+     * Enqueue scripts conditionally in admin
      * @since  5.3
      * @param $hook_suffix
      */
     public function admin_scripts($hook_suffix){
-
-        //var_dump( $hook_suffix );
 
         switch ($hook_suffix) {
 
@@ -231,7 +229,7 @@ class Admin{
 
                 wp_enqueue_style('jm-tc-admin-style', JM_TC_CSS_URL . 'jm-tc-admin.css');
                 wp_enqueue_script('twitter-widget', '//platform.twitter.com/widgets.js',
-                    false,
+                    array(),
                     null,
                     true
                 );

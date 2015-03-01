@@ -76,7 +76,8 @@ function _jm_tc_plugins_loaded(){
 
     $GLOBALS['tc-disable'] = new \jm_twitter_cards\Disable;
     $GLOBALS['tc-particular'] = new \jm_twitter_cards\Particular;
-    $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;    $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
+    $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;
+    $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
 
 
 }
