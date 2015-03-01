@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 Plugin Name: JM Twitter Cards
 Plugin URI: http://tweetpressfr.github.io
 Description: Meant to help users to implement and customize Twitter Cards easily
@@ -44,6 +44,7 @@ defined('ABSPATH')
 or die('No direct load !');
 
 //Constantly constant
+define( 'JM_TC_MIN_PHP_VERSION', '5.3' );
 define( 'JM_TC_VERSION', '5.5' );
 define( 'JM_TC_DIR', plugin_dir_path(__FILE__) );
 define( 'JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/' );
@@ -92,6 +93,31 @@ load_files(JM_TC_CLASS_DIR, array('init', 'utilities', 'particular', 'thumbs', '
  * On activation
  */
 register_activation_hook(__FILE__, array('\jm_twitter_cards\Init', 'activate'));
+
+
+/**
+ * check PHP version, deactivate if necessary
+ */
+add_action('admin_notices', '_jm_tc_admin_notification', 0);
+function _jm_tc_admin_notification(){
+
+    $error = '';
+
+    if (version_compare(JM_TC_MIN_PHP_VERSION, phpversion(), '>')) {
+        $error = 'PHP version : ' . JM_TC_MIN_PHP_VERSION . '. minimum !';
+    }
+
+    global $pagenow;
+
+    if ( empty($error) || empty($pagenow) || 'plugins.php' !== $pagenow )
+        return;
+
+    unset($_GET['activate']);
+
+    printf(__('<div class="error"><p>%1$s</p><p><i>%2$s</i> has been deactivated.</p></div>'), $error, 'JM Twitter Cards');
+
+    deactivate_plugins(plugin_basename(__FILE__));
+}
 
 /**
  * Everything that should trigger early
