@@ -86,7 +86,7 @@ function _jm_tc_plugins_loaded(){
  * @return mixed
  */
 
-add_filter( 'plugin_action_links_jm-twitter-cards/jm-twitter-cards.php', '_jm_tc_settings_action_links', 10, 2);
+add_filter( 'plugin_action_links_' . plugin_basename('jm-twitter-cards/jm-twitter-cards.php'), '_jm_tc_settings_action_links', 10, 2);
 function _jm_tc_settings_action_links($links){
 
     $settings_link = '<a href="' . add_query_arg(array('page' => 'jm_tc'), admin_url('admin.php')) . '">' . __("Settings") . '</a>';
