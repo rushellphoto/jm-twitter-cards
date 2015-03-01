@@ -58,8 +58,8 @@ register_activation_hook(__FILE__, array('\jm_twitter_cards\Init', 'activate'));
 /**
  * Everything that should trigger early
  */
-add_action( 'plugins_loaded', 'jm_tc_plugins_loaded' );
-function jm_tc_plugins_loaded(){
+add_action( 'plugins_loaded', '_jm_tc_plugins_loaded' );
+function _jm_tc_plugins_loaded(){
 
     if (is_admin()) {
 
@@ -74,10 +74,10 @@ function jm_tc_plugins_loaded(){
     //langs
     load_plugin_textdomain(JM_TC_TEXTDOMAIN, false, JM_TC_LANG_DIR);
 
-    $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
     $GLOBALS['tc-disable'] = new \jm_twitter_cards\Disable;
     $GLOBALS['tc-particular'] = new \jm_twitter_cards\Particular;
-    $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;
+    $GLOBALS['tc-markup'] = new \jm_twitter_cards\Markup;    $GLOBALS['tc-init'] = new \jm_twitter_cards\Init;
+
 
 }
 
@@ -87,8 +87,8 @@ function jm_tc_plugins_loaded(){
  * @return mixed
  */
 
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'jm_tc_settings_action_links', 10, 2 );
-function jm_tc_settings_action_links($links){
+add_filter('plugin_action_links' . plugin_basename(__FILE__), '_jm_tc_settings_action_links', 10, 2);
+function _jm_tc_settings_action_links($links){
     $settings_link = '<a href="' . admin_url('admin.php?page='.'jm_tc') . '">' . __("Settings") . '</a>';
     array_unshift($links, $settings_link);
 
