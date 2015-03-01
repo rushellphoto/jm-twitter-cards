@@ -57,22 +57,22 @@ class Markup{
         ) {
 
             // safer than the global $post => seems killed on a lot of install :/
-            $post_obj = $GLOBALS['post'];
+            $post_instance = $GLOBALS['post'];
 
             $this->html_comments();
 
             /* most important meta */
-            $this->display_markup($options->cardType($post_obj));
-            $this->display_markup($options->creatorUsername(true, $post_obj));
+            $this->display_markup($options->cardType($post_instance));
+            $this->display_markup($options->creatorUsername(true, $post_instance));
             $this->display_markup($options->siteUsername());
-            $this->display_markup($options->title($post_obj));
-            $this->display_markup($options->description($post_obj));
-            $this->display_markup($options->image($post_obj));
+            $this->display_markup($options->title($post_instance));
+            $this->display_markup($options->description($post_instance));
+            $this->display_markup($options->image($post_instance));
 
             /* secondary meta */
-            $this->display_markup($options->cardDim($post_obj));
-            $this->display_markup($options->product($post_obj));
-            $this->display_markup($options->player($post_obj));
+            $this->display_markup($options->cardDim($post_instance));
+            $this->display_markup($options->product($post_instance));
+            $this->display_markup($options->player($post_instance));
             $this->display_markup($options->deeplinking());
 
             $this->html_comments('Marion');

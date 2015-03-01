@@ -42,7 +42,7 @@ class Options{
      * @param bool $post->ID
      * @return array
      */
-    public function cardType(WP_Post $post){
+    public function cardType(\WP_Post $post){
 
         $cardTypePost = get_post_meta($post->ID, 'twitterCardType', true);
 
@@ -60,13 +60,13 @@ class Options{
     /**
      * Retrieve the meta creator
      * @param bool $post_author
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array
      */
 
-    public function creatorUsername($post_author = false, WP_Post $post){
+    public function creatorUsername($post_author = false, \WP_Post $post){
 
-        $cardCreator = '@' . __NAMESPACE__ . \Utilities::remove_at($this->opts['twitterCreator']);
+        $cardCreator = '@' . Utilities::remove_at($this->opts['twitterCreator']);
         $post = get_post($post->ID);
 
         if ( false !== $post_author) {
@@ -77,7 +77,7 @@ class Options{
             $cardCreator = get_the_author_meta($cardUsernameKey, $post->post_author);
 
             $cardCreator = '' !== $cardCreator ? $cardCreator : $this->opts['twitterCreator'];
-            $cardCreator = '@' . __NAMESPACE__ . \Utilities::remove_at($cardCreator);
+            $cardCreator = '@' . Utilities::remove_at($cardCreator);
 
         }
 
@@ -92,7 +92,7 @@ class Options{
      */
     public function siteUsername(){
 
-        $cardSite = '@' . __NAMESPACE__ . \Utilities::remove_at($this->opts['twitterSite']);
+        $cardSite = '@' . Utilities::remove_at($this->opts['twitterSite']);
         $cardSite = apply_filters('jm_tc_card_site', $cardSite);
 
         return array('site' =>  $cardSite);
@@ -104,15 +104,15 @@ class Options{
      * @param $type
      * @return bool|string
      */
-    public static function get_seo_plugin_data(WP_Post $post, $type){
+    public static function get_seo_plugin_data(\WP_Post $post, $type){
 
         if (class_exists('WPSEO_Frontend')) {
-            $title = __NAMESPACE__ . \Utilities::strip_meta('_yoast_wpseo_title', $post->ID);
-            $desc = __NAMESPACE__ . \Utilities::strip_meta('_yoast_wpseo_metadesc', $post->ID);
+            $title = Utilities::strip_meta('_yoast_wpseo_title', $post->ID);
+            $desc = Utilities::strip_meta('_yoast_wpseo_metadesc', $post->ID);
 
         } elseif (class_exists('All_in_One_SEO_Pack')) {
-            $title = __NAMESPACE__ . \Utilities::strip_meta('_aioseop_title', $post->ID);
-            $desc = __NAMESPACE__ . \Utilities::strip_meta('_aioseop_description', $post->ID);
+            $title = Utilities::strip_meta('_aioseop_title', $post->ID);
+            $desc = Utilities::strip_meta('_aioseop_description', $post->ID);
         }
 
         if( 'title' === $type ) {
@@ -125,13 +125,13 @@ class Options{
 
     /**
      * retrieve the title
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array
      */
-    public function title(WP_Post $post){
+    public function title(\WP_Post $post){
 
         $cardTitle = the_title_attribute(array('echo' => false));
-        $customCardTitle = __NAMESPACE__ . \Utilities::strip_meta($this->opts['twitterCardTitle'], $post->ID);
+        $customCardTitle = Utilities::strip_meta($this->opts['twitterCardTitle'], $post->ID);
 
         if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
@@ -155,29 +155,29 @@ class Options{
 
     /**
      * retrieve the description
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array
      */
-    public function description(WP_Post $post){
+    public function description(\WP_Post $post){
 
-        $cardDescription = __NAMESPACE__ . \Utilities::get_excerpt_by_id($post->ID);
-        $customCardDescription = __NAMESPACE__ . \Utilities::strip_meta($this->opts['twitterCardDesc'], $post->ID);
+        $cardDescription = Utilities::get_excerpt_by_id($post->ID);
+        $customCardDescription = Utilities::strip_meta($this->opts['twitterCardDesc'], $post->ID);
 
         if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
             $seo_desc = self::get_seo_plugin_data($post->ID, 'description');
-            $cardDescription = false !== $seo_desc ? $seo_desc : __NAMESPACE__ . \Utilities::get_excerpt_by_id($post->ID);
+            $cardDescription = false !== $seo_desc ? $seo_desc : Utilities::get_excerpt_by_id($post->ID);
 
         }
 
 
         if ( '' !== $this->opts['twitterCardDesc'] && !is_null($this->opts['twitterCardDesc']) ) {
 
-            $cardDescription = false !== $customCardDescription ? $customCardDescription : __NAMESPACE__ . \Utilities::get_excerpt_by_id($post->ID);
+            $cardDescription = false !== $customCardDescription ? $customCardDescription : Utilities::get_excerpt_by_id($post->ID);
 
         }
 
-        $cardDescription = apply_filters( 'jm_tc_get_excerpt', __NAMESPACE__ . \Utilities::remove_lb($cardDescription) );
+        $cardDescription = apply_filters( 'jm_tc_get_excerpt', Utilities::remove_lb($cardDescription) );
 
         return array('description' => $cardDescription);
 
@@ -186,10 +186,10 @@ class Options{
 
     /**
      * retrieve the image
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array|bool|string
      */
-    public function image(WP_Post $post){
+    public function image(\WP_Post $post){
 
         $cardImage = get_post_meta($post->ID, 'cardImage', true);
         $cardType = get_post_meta($post->ID, 'twitterCardType', true);
@@ -229,7 +229,7 @@ class Options{
 
         if ('' !== get_the_post_thumbnail($post->ID)) {
 
-            $size = __NAMESPACE__ . \Thumbs::thumbnail_sizes($post->ID);
+            $size = Thumbs::thumbnail_sizes($post->ID);
             $image_attributes = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), $size);
             $image = $image_attributes[0];
 
@@ -255,10 +255,10 @@ class Options{
 
     /**
      * Product additional fields
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array|bool|string
      */
-    public function product(WP_Post $post){
+    public function product(\WP_Post $post){
 
         $cardType = apply_filters('jm_tc_card_type', get_post_meta($post->ID, 'twitterCardType', true));
 
@@ -287,10 +287,10 @@ class Options{
 
     /**
      * Player additional fields
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array|bool|string
      */
-    public function player(WP_Post $post){
+    public function player(\WP_Post $post){
 
         $cardType = apply_filters( 'jm_tc_card_type', get_post_meta($post->ID, 'twitterCardType', true));
 
@@ -341,11 +341,11 @@ class Options{
 
     /**
      * Image Width and Height
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return array|bool
      */
 
-    public function cardDim(WP_Post $post){
+    public function cardDim(\WP_Post $post){
 
         $cardTypePost = get_post_meta($post->ID, 'twitterCardType', true);
         $cardWidth = get_post_meta($post->ID, 'cardImageWidth', true);

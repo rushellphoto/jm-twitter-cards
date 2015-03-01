@@ -11,12 +11,12 @@ if (!defined('JM_TC_VERSION')) {
 class Preview{
     /**
      * output cards preview
-     * @param WP_Post $post
+     * @param \WP_Post $post
      * @return string
      */
-    public static function show_preview(WP_Post $post){
+    public static function show_preview(\WP_Post $post){
 
-        $options = new JM_TC_Options;
+        $options = new Options;
         $opts = jm_tc_get_options();
 
         $is_og = $opts['twitterCardOg'];
