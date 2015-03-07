@@ -2,6 +2,8 @@
 
 Easy integration of Twitter cards in WordPress. All card types provided.
 
+**MINIMUM PHP 5.3**
+
 ## Description ##
 
 This is the github version of the official repository for JM Twitter Cards. It's hardly a fork but I'm working on ! I'm trying to improve code structure and I'm adding some cool stuffs.
