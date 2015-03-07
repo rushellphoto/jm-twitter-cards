@@ -159,3 +159,29 @@ function _jm_tc_settings_action_links($links){
 
     return $links;
 }
+
+
+/**
+ * Check if current PHP version is newer than 5.3
+ * @link https://gist.github.com/TweetPressFr/0cb0ef6330f054f55839
+ * @author Julien Maury
+ */
+add_action('admin_notices', '_jm_tc_check_php_version_notif', 0);
+function _jm_tc_check_php_version_notif(){
+
+    global $pagenow;
+    $error = '';
+
+    if (version_compare('5.3', phpversion(), '>')) {
+        $error = 'Needs PHP 5.3 at least ! Sorry !';
+    }
+
+    if ( empty($error) || empty($pagenow) || 'plugins.php' !== $pagenow )
+        return;
+
+    unset($_GET['activate']);
+
+    printf(__('<div class="error"><p>%2$s</p><p>%1$s has been deactivated.</p></div>'), 'JM Twitter Cards', $error);
+
+    deactivate_plugins( plugin_basename(__FILE__) );
+}
