@@ -135,7 +135,7 @@ class Options{
 
         if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-            $seo_title = self::get_seo_plugin_data($post->ID, 'title');
+            $seo_title = self::get_seo_plugin_data($post, 'title');
             $cardTitle = false !== $seo_title ? $seo_title : the_title_attribute(array('echo' => false));
 
         }
@@ -165,7 +165,7 @@ class Options{
 
         if ( class_exists('WPSEO_Frontend') || class_exists('All_in_One_SEO_Pack') ) {
 
-            $seo_desc = self::get_seo_plugin_data($post->ID, 'description');
+            $seo_desc = self::get_seo_plugin_data($post, 'description');
             $cardDescription = false !== $seo_desc ? $seo_desc : Utilities::get_excerpt_by_id($post->ID);
 
         }
