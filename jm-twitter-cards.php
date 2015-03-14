@@ -44,7 +44,7 @@ defined('ABSPATH')
 or die('No direct load !');
 
 //Constantly constant
-define( 'JM_TC_MIN_PHP_VERSION', '5.3' );
+define( 'JM_TC_MIN_PHP_VERSION', '5.3.28' );
 define( 'JM_TC_VERSION', '5.5' );
 define( 'JM_TC_DIR', plugin_dir_path(__FILE__) );
 define( 'JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/' );
@@ -94,9 +94,10 @@ load_files(JM_TC_CLASS_DIR, array('init', 'utilities', 'particular', 'thumbs', '
  */
 register_activation_hook(__FILE__, array('\jm_twitter_cards\Init', 'activate'));
 
-
 /**
- * check PHP version, deactivate if necessary
+ * Check if current PHP version is newer than 5.3.28
+ * @link https://gist.github.com/TweetPressFr/0cb0ef6330f054f55839
+ * @author Julien Maury
  */
 add_action('admin_notices', '_jm_tc_admin_notification', 0);
 function _jm_tc_admin_notification(){
