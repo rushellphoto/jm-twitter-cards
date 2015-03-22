@@ -44,7 +44,7 @@ defined('ABSPATH')
 or die('No direct load !');
 
 //Constantly constant
-define( 'JM_TC_MIN_PHP_VERSION', '5.3.28' );
+define( 'JM_TC_MIN_PHP_VERSION', '5.4' );
 define( 'JM_TC_VERSION', '5.5' );
 define( 'JM_TC_DIR', plugin_dir_path(__FILE__) );
 define( 'JM_TC_CLASS_DIR', JM_TC_DIR . 'classes/' );
